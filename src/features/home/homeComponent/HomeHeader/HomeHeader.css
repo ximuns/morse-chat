@@ -1,0 +1,100 @@
+.header {
+    position: relative;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 38px 56px;
+}
+
+.header__logo {
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.22em;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    transition: opacity 0.3s ease;
+}
+
+.header__logo:hover {
+    opacity: 0.6;
+}
+
+.header__nav {
+    display: flex;
+    align-items: center;
+    gap: 42px;
+}
+
+.header__link {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    transition: opacity 0.3s ease;
+}
+
+.header__link:hover {
+    opacity: 0.5;
+}
+
+.header__morse {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    height: 20px;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.header__morse-dot {
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+    background: #dcded9;
+}
+
+.header__morse-line {
+    width: 18px;
+    height: 2px;
+
+    background: #dcded9;
+}
+
+@media (max-width: 900px) {
+    .header {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 650px) {
+    .header {
+        padding: 25px 22px;
+    }
+
+    .header__nav {
+        gap: 20px;
+    }
+
+    .header__logo {
+        font-size: 12px;
+    }
+
+    .header__link {
+        font-size: 10px;
+    }
+
+    .header__morse {
+        transform: scale(0.8);
+    }
+}
