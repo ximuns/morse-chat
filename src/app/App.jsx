@@ -1,13 +1,13 @@
 import './App.css'
 
-// import MorseScene from '../background/MorseScene'
 import HomeScreen from '../features/home/HomeScreen'
 import Top from '../backgound/Top/Top'
+import Bottom from '../backgound/Bottom/Bottom'
 
 function App() {
     return (
         <main className="page">
-            {/* <MorseScene /> */}
+            <Bottom />
             <Top />
 
             <HomeScreen />
