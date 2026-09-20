@@ -1,0 +1,82 @@
+.top {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 42vh;
+
+    z-index: 1;
+
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.top__svg {
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+}
+
+
+.top__grid {
+    fill: none;
+
+    stroke-width: 0.7;
+
+    shape-rendering: geometricPrecision;
+}
+
+
+.top__particles {
+    fill: rgba(220, 225, 222, 0.9);
+}
+
+.top__particle {
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation:
+        topParticlePulse
+        4s
+        ease-in-out
+        infinite;
+}
+
+
+.top__horizon {
+    fill: rgba(220, 225, 222, 0.65);
+}
+
+
+@keyframes topParticlePulse {
+    0% {
+        opacity: 0.35;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+
+    100% {
+        opacity: 0.35;
+    }
+}
+
+@media (max-width: 650px) {
+    .top {
+        height: 38vh;
+    }
+
+    .top__grid {
+        stroke-width: 0.9;
+    }
+}

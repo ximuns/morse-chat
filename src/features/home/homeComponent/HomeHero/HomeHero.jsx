@@ -1,7 +1,6 @@
+import RoomButton from '../../../rooms/RoomButton/RoomButton'
 import './HomeHero.css'
 
-// import CreateRoom from '../../rooms/CreateRoom/CreateRoom'
-// import JoinRoom from '../../rooms/JoinRoom/JoinRoom'
 
 function HomeHero() {
     return (
@@ -20,8 +19,13 @@ function HomeHero() {
             </div>
 
             <div className="hero__actions">
-                {/* <CreateRoom />
-                <JoinRoom /> */}
+                <RoomButton>
+                    СОЗДАТЬ КОМНАТУ
+                </RoomButton>
+
+                <RoomButton>
+                    ВОЙТИ В КОМНАТУ
+                </RoomButton>
             </div>
         </section>
     )

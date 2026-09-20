@@ -47,6 +47,10 @@
 
     margin-right: 5%;
     margin-top: 5vh;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 @media (max-width: 900px) {
