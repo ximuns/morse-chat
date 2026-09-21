@@ -2,7 +2,9 @@ import RoomButton from '../../../rooms/RoomButton/RoomButton'
 import './HomeHero.css'
 
 
-function HomeHero() {
+function HomeHero({
+    onCreateRoom,
+}) {
     return (
         <section className="hero">
             <div className="hero__content">
@@ -19,7 +21,11 @@ function HomeHero() {
             </div>
 
             <div className="hero__actions">
-                <RoomButton>
+                <RoomButton
+                    onClick={
+                        onCreateRoom
+                    }
+                >
                     СОЗДАТЬ КОМНАТУ
                 </RoomButton>
 
