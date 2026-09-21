@@ -1,9 +1,11 @@
+import JoinRoom from '../../../rooms/JoinRoom/JoinRoom'
 import RoomButton from '../../../rooms/RoomButton/RoomButton'
 import './HomeHero.css'
 
 
 function HomeHero({
     onCreateRoom,
+    onJoinRoom,
 }) {
     return (
         <section className="hero">
@@ -29,9 +31,9 @@ function HomeHero({
                     СОЗДАТЬ КОМНАТУ
                 </RoomButton>
 
-                <RoomButton>
-                    ВОЙТИ В КОМНАТУ
-                </RoomButton>
+                <JoinRoom
+                    onJoin={onJoinRoom}
+                />
             </div>
         </section>
     )

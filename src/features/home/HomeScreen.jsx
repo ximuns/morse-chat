@@ -7,6 +7,7 @@ import './HomeScreen.css'
 
 function HomeScreen({
     onCreateRoom,
+    onJoinRoom,
 }) {
 
     return (
@@ -15,6 +16,9 @@ function HomeScreen({
             <HomeHero
                 onCreateRoom={
                     onCreateRoom
+                }
+                onJoinRoom={
+                    onJoinRoom
                 }
             />
             <HomeFooter />
