@@ -2,7 +2,8 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
     background: #050607;
 }
 
@@ -15,4 +16,27 @@
     height: 100%;
 
     z-index: 5;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+    background: #050607;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input {
+    font: inherit;
 }

@@ -1,0 +1,38 @@
+.scatter-text {
+    display: inline;
+}
+
+.scatter-text__letter {
+    display: inline-block;
+
+    position: relative;
+
+    will-change:
+        transform;
+
+    cursor: crosshair;
+
+    transform-origin: center center;
+
+    transition:
+        color .6s
+        cubic-bezier(.16, 1, .3, 1),
+
+        filter .6s
+        cubic-bezier(.16, 1, .3, 1);
+}
+
+.scatter-text__letter:hover {
+    color: #ffffff;
+
+    filter:
+        brightness(1.15);
+}
+
+.scatter-text__letter--scattered {
+    z-index: 50;
+}
+
+.scatter-text__space {
+    display: inline;
+}

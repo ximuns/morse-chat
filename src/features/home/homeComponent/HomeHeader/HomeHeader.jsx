@@ -1,6 +1,6 @@
 import './HomeHeader.css'
 
-function HomeHeader() {
+function HomeHeader({ onAbout }) {
     return (
         <header className="header">
             <a href="/" className="header__logo">
@@ -8,9 +8,13 @@ function HomeHeader() {
             </a>
 
             <nav className="header__nav">
-                <a href="#about" className="header__link">
+                <button
+                    type="button"
+                    className="header__link"
+                    onClick={onAbout}
+                >
                     О НАС
-                </a>
+                </button>
 
                 <button
                     className="header__morse"
