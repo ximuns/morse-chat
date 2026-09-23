@@ -151,6 +151,16 @@ function Bottom() {
             })
 
         // =====================================
+        // SIGNAL STATE
+        // =====================================
+
+        let signalEnergy = 0
+
+        let signalTarget = 0
+
+        let signalRotation = 0
+
+        // =====================================
         // INITIAL BUILD
         // =====================================
 
@@ -179,17 +189,166 @@ function Bottom() {
         )
 
         // =====================================
-        // RENDER
+        // MORSE SIGNAL
         // =====================================
 
-        function render() {
+        function handleMorseSignal(
+            event
+        ) {
+            const {
+                signal,
+                strength,
+            } = event.detail || {}
+
+            signalTarget =
+                strength ??
+                (
+                    signal === '-'
+                        ? 1
+                        : 0.65
+                )
+
+            // Точка и тире имеют
+            // немного разное движение.
+
+            if (
+                signal === '-'
+            ) {
+                signalRotation +=
+                    0.12
+            } else {
+                signalRotation -=
+                    0.07
+            }
+        }
+
+        window.addEventListener(
+            'morse:signal',
+            handleMorseSignal
+        )
+
+        // =====================================
+        // ANIMATION
+        // =====================================
+
+        let animationFrame
+
+        function animate() {
+            animationFrame =
+                requestAnimationFrame(
+                    animate
+                )
+
+            // ---------------------------------
+            // ENERGY
+            // ---------------------------------
+
+            signalEnergy +=
+                (
+                    signalTarget -
+                    signalEnergy
+                ) * 0.14
+
+            signalTarget *= 0.90
+
+            // ---------------------------------
+            // BASE MOTION
+            // ---------------------------------
+
+            const time =
+                performance.now() *
+                0.001
+
+            // ---------------------------------
+            // MORSE
+            // ---------------------------------
+
+            morseGroup.position.x =
+                Math.sin(
+                    time * 0.45
+                ) *
+                signalEnergy *
+                1.5
+
+            morseGroup.rotation.z =
+                Math.sin(
+                    time * 0.35
+                ) *
+                signalEnergy *
+                0.003
+
+            morseGroup.scale.y =
+                1 +
+                signalEnergy *
+                0.025
+
+            // ---------------------------------
+            // PARTICLES
+            // ---------------------------------
+
+            sideParticlesGroup.position.x =
+                Math.sin(
+                    time * 0.55
+                ) *
+                signalEnergy *
+                3
+
+            sideParticlesGroup.position.y =
+                Math.cos(
+                    time * 0.40
+                ) *
+                signalEnergy *
+                1.5
+
+            // ---------------------------------
+            // HORIZON
+            // ---------------------------------
+
+            horizonGroup.scale.x =
+                1 +
+                signalEnergy *
+                0.035
+
+            horizonGroup.scale.y =
+                1 +
+                signalEnergy *
+                0.02
+
+            // ---------------------------------
+            // GLOW
+            // ---------------------------------
+
+            glowGroup.scale.x =
+                1 +
+                signalEnergy *
+                0.08
+
+            glowGroup.scale.y =
+                1 +
+                signalEnergy *
+                0.045
+
+            glowGroup.rotation.z =
+                signalRotation +
+                Math.sin(time * 0.15) *
+                0.015
+
+            // ---------------------------------
+            // MATERIAL
+            // ---------------------------------
+
+            morseMaterial.opacity =
+                0.82 +
+                signalEnergy *
+                0.12
+
             renderer.render(
                 scene,
                 camera
             )
         }
 
-        render()
+        animate()
 
         // =====================================
         // RESIZE
@@ -274,8 +433,6 @@ function Bottom() {
                 horizonGroup,
                 height
             )
-
-            render()
         }
 
         window.addEventListener(
@@ -288,9 +445,18 @@ function Bottom() {
         // =====================================
 
         return () => {
+            cancelAnimationFrame(
+                animationFrame
+            )
+
             window.removeEventListener(
                 'resize',
                 handleResize
+            )
+
+            window.removeEventListener(
+                'morse:signal',
+                handleMorseSignal
             )
 
             // ---------------------------------
