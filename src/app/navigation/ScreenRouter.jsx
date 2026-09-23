@@ -3,23 +3,29 @@ import { AnimatePresence } from 'motion/react'
 
 import HomeScreen from '../../features/home/HomeScreen'
 import RoomCreationScreen from '../../features/rooms/RoomCreationScreen/RoomCreationScreen'
+import RoomsScreen from '../../features/rooms/RoomScreen/RoomScreen'
 import AboutScreen from '../../features/about/AboutScreen'
 
 import AnimatedScreen from './AnimatedScreen'
 
 function ScreenRouter() {
-
-    const [screen, setScreen] =
-        useState('home')
+    const [screen, setScreen] = useState('home')
 
     function handleJoinRoom(code) {
         console.log('JOIN ROOM:', code)
     }
 
-    return (
-        <AnimatePresence mode="wait">
+    function handleEnterRoom(room) {
+        console.log('ENTER ROOM:', room)
+        // Позже:
+        // setScreen('chat')
+    }
 
-            {screen === 'home' && (
+    const isHome = screen === 'home' || screen === 'rooms'
+
+    return (
+        <>
+            {isHome && (
                 <AnimatedScreen
                     key="home"
                     className="scene--home"
@@ -28,45 +34,64 @@ function ScreenRouter() {
                         onCreateRoom={() =>
                             setScreen('create-room')
                         }
+
                         onJoinRoom={
                             handleJoinRoom
                         }
+
                         onAbout={() =>
                             setScreen('about')
                         }
-                    />
-                </AnimatedScreen>
-            )}
 
-
-            {screen === 'create-room' && (
-                <AnimatedScreen
-                    key="create-room"
-                    className="scene--room"
-                >
-                    <RoomCreationScreen
-                        onBack={() =>
-                            setScreen('home')
+                        onRooms={() =>
+                            setScreen('rooms')
                         }
                     />
                 </AnimatedScreen>
             )}
-
-
-            {screen === 'about' && (
-                <AnimatedScreen
-                    key="about"
-                    className="scene--about"
-                >
-                    <AboutScreen
+            <AnimatePresence>
+                {screen === 'rooms' && (
+                    <RoomsScreen
+                        key="rooms"
                         onBack={() =>
                             setScreen('home')
                         }
+                        onEnterRoom={
+                            handleEnterRoom
+                        }
                     />
-                </AnimatedScreen>
-            )}
+                )}
+            </AnimatePresence>
+            <AnimatePresence mode="wait">
+                {screen === 'create-room' && (
+                    <AnimatedScreen
+                        key="create-room"
+                        className="scene--room"
+                    >
+                        <RoomCreationScreen
+                            onBack={() =>
+                                setScreen('home')
+                            }
+                        />
+                    </AnimatedScreen>
+                )}
+            </AnimatePresence>
 
-        </AnimatePresence>
+            <AnimatePresence mode="wait">
+                {screen === 'about' && (
+                    <AnimatedScreen
+                        key="about"
+                        className="scene--about"
+                    >
+                        <AboutScreen
+                            onBack={() =>
+                                setScreen('home')
+                            }
+                        />
+                    </AnimatedScreen>
+                )}
+            </AnimatePresence>
+        </>
     )
 }
 

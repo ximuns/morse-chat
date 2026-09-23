@@ -8,18 +8,18 @@ function HomeScreen({
     onCreateRoom,
     onJoinRoom,
     onAbout,
+    onRooms,
 }) {
     return (
         <div className="home-screen">
             <HomeHeader
                 onAbout={onAbout}
+                onRooms={onRooms}
             />
-
             <HomeHero
                 onCreateRoom={onCreateRoom}
                 onJoinRoom={onJoinRoom}
             />
-
             <HomeFooter />
         </div>
     )
