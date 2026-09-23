@@ -1,60 +1,45 @@
 import { useEffect, useRef } from 'react'
 
 function useScrollParallax(speed = 0.1) {
+  const ref = useRef(null)
 
-    const ref = useRef(null)
+  useEffect(() => {
+    let frame
 
-    useEffect(() => {
+    let current = 0
 
-        let frame
+    function update() {
+      if (!ref.current) {
+        frame = requestAnimationFrame(update)
 
-        let current = 0
+        return
+      }
 
-        function update() {
+      const rect = ref.current.getBoundingClientRect()
 
-            if (!ref.current) {
-                frame =
-                    requestAnimationFrame(update)
+      const viewportCenter = window.innerHeight / 2
 
-                return
-            }
+      const elementCenter = rect.top + rect.height / 2
 
-            const rect =
-                ref.current.getBoundingClientRect()
+      const distance = elementCenter - viewportCenter
 
-            const viewportCenter =
-                window.innerHeight / 2
+      const target = distance * speed
 
-            const elementCenter =
-                rect.top +
-                rect.height / 2
+      current += (target - current) * 0.08
 
-            const distance =
-                elementCenter -
-                viewportCenter
+      ref.current.style.transform = `translate3d(0, ${current}px, 0)`
 
-            const target =
-                distance * speed
+      frame = requestAnimationFrame(update)
+    }
 
-            current +=
-                (target - current) * .08
+    update()
 
-            ref.current.style.transform =
-                `translate3d(0, ${current}px, 0)`
+    return () => {
+      cancelAnimationFrame(frame)
+    }
+  }, [speed])
 
-            frame =
-                requestAnimationFrame(update)
-        }
-
-        update()
-
-        return () => {
-            cancelAnimationFrame(frame)
-        }
-
-    }, [speed])
-
-    return ref
+  return ref
 }
 
 export default useScrollParallax

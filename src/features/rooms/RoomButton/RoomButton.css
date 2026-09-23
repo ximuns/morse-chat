@@ -1,99 +1,99 @@
 .room-button {
-    position: relative;
+  position: relative;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    width: 100%;
-    padding: 0;
+  width: 100%;
+  padding: 0;
 
-    background: transparent;
-    border: 0;
+  background: transparent;
+  border: 0;
 
-    color: #ecece9;
-    text-align: left;
+  color: #ecece9;
+  text-align: left;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .room-button__index {
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 
-    font-size: 9px;
-    line-height: 1;
-    letter-spacing: 0.18em;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.18em;
 
-    color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .room-button__content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    padding: 23px 0;
+  padding: 23px 0;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
 
-    transition:
-        border-color 0.3s ease,
-        padding 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    padding 0.3s ease;
 }
 
 .room-button__title {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
 
-    letter-spacing: 0.14em;
+  letter-spacing: 0.14em;
 
-    color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.84);
 
-    transition:
-        color 0.3s ease,
-        letter-spacing 0.3s ease;
+  transition:
+    color 0.3s ease,
+    letter-spacing 0.3s ease;
 }
 
 .room-button__arrow {
-    font-size: 18px;
-    line-height: 1;
+  font-size: 18px;
+  line-height: 1;
 
-    color: rgba(255, 255, 255, 0.84);
+  color: rgba(255, 255, 255, 0.84);
 
-    transform: translateX(0);
+  transform: translateX(0);
 
-    transition:
-        transform 0.3s ease,
-        color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .room-button:hover .room-button__content {
-    padding-left: 8px;
-    padding-right: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
 
-    border-color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.65);
 }
 
 .room-button:hover .room-button__title {
-    color: #ffffff;
-    letter-spacing: 0.18em;
+  color: #ffffff;
+  letter-spacing: 0.18em;
 }
 
 .room-button:hover .room-button__arrow {
-    color: #ffffff;
-    transform: translateX(6px);
+  color: #ffffff;
+  transform: translateX(6px);
 }
 
 .room-button:active .room-button__content {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 @media (max-width: 650px) {
-    .room-button__index {
-        margin-bottom: 12px;
-    }
+  .room-button__index {
+    margin-bottom: 12px;
+  }
 
-    .room-button__title {
-        font-size: 10px;
-    }
+  .room-button__title {
+    font-size: 10px;
+  }
 }

@@ -3,35 +3,26 @@ import { motion } from 'motion/react'
 import './ScatterText.css'
 
 function random(min, max) {
-    return Math.random() * (max - min) + min
+  return Math.random() * (max - min) + min
 }
 
-function ScatterText({
-    children,
-    className = '',
-    scatter = 260,
-    rotation = 70,
-    duration = 1.5,
-}) {
-    const containerRef = useRef(null)
+function ScatterText({ children, className = '', scatter = 260, rotation = 70, duration = 1.5 }) {
+  const containerRef = useRef(null)
 
-    const [letters, setLetters] = useState([])
+  const [letters, setLetters] = useState([])
 
-    const text = String(children)
+  const text = String(children)
 
-function scatterLetter(index) {
-    const container =
-        containerRef.current
+  function scatterLetter(index) {
+    const container = containerRef.current
 
     if (!container) return
 
-    const section =
-        container.closest('.about-why')
+    const section = container.closest('.about-why')
 
     if (!section) return
 
-    const sectionRect =
-        section.getBoundingClientRect()
+    const sectionRect = section.getBoundingClientRect()
 
     /*
      * Увеличиваем область,
@@ -42,14 +33,11 @@ function scatterLetter(index) {
      * и высоту секции.
      */
 
-    const maxX =
-        sectionRect.width * 0.72
+    const maxX = sectionRect.width * 0.72
 
-    const maxY =
-        sectionRect.height * 0.55
+    const maxY = sectionRect.height * 0.55
 
-    const angle =
-        random(0, Math.PI * 2)
+    const angle = random(0, Math.PI * 2)
 
     /*
      * Минимальное расстояние тоже
@@ -58,151 +46,92 @@ function scatterLetter(index) {
      * с исходным местом.
      */
 
-    const distance =
-        random(
-            scatter * 0.8,
-            scatter * 1.8
-        )
+    const distance = random(scatter * 0.8, scatter * 1.8)
 
-    let x =
-        Math.cos(angle) * distance
+    let x = Math.cos(angle) * distance
 
-    let y =
-        Math.sin(angle) * distance
+    let y = Math.sin(angle) * distance
 
     /*
      * Ограничиваем только самые
      * крайние значения.
      */
 
-    x = Math.max(
-        -maxX,
-        Math.min(maxX, x)
-    )
+    x = Math.max(-maxX, Math.min(maxX, x))
 
-    y = Math.max(
-        -maxY,
-        Math.min(maxY, y)
-    )
+    y = Math.max(-maxY, Math.min(maxY, y))
 
-    const rotate =
-        random(
-            -rotation,
-            rotation
-        )
+    const rotate = random(-rotation, rotation)
 
     setLetters((current) => {
+      const exists = current.some((item) => item.index === index)
 
-        const exists =
-            current.some(
-                (item) =>
-                    item.index === index
-            )
+      if (exists) {
+        return current
+      }
 
-        if (exists) {
-            return current
+      return [
+        ...current,
+        {
+          index,
+          x,
+          y,
+          rotate,
+        },
+      ]
+    })
+  }
+
+  function returnLetter(index) {
+    setLetters((current) => current.filter((item) => item.index !== index))
+  }
+
+  return (
+    <span ref={containerRef} className={`scatter-text ${className}`}>
+      {text.split('').map((letter, index) => {
+        if (letter === ' ') {
+          return (
+            <span key={index} className="scatter-text__space">
+              {' '}
+            </span>
+          )
         }
 
-        return [
-            ...current,
-            {
-                index,
-                x,
-                y,
-                rotate,
-            },
-        ]
-    })
-}
+        const state = letters.find((item) => item.index === index)
 
-    function returnLetter(index) {
-        setLetters((current) =>
-            current.filter(
-                (item) =>
-                    item.index !== index
-            )
+        const scattered = Boolean(state)
+
+        return (
+          <motion.span
+            key={index}
+            className={`scatter-text__letter ${scattered ? 'scatter-text__letter--scattered' : ''}`}
+            animate={{
+              x: state?.x ?? 0,
+
+              y: state?.y ?? 0,
+
+              rotate: state?.rotate ?? 0,
+            }}
+            transition={{
+              duration,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            onMouseEnter={() => {
+              if (scattered) {
+                returnLetter(index)
+
+                return
+              }
+
+              scatterLetter(index)
+            }}
+          >
+            {letter}
+          </motion.span>
         )
-    }
-
-    return (
-        <span
-            ref={containerRef}
-            className={`scatter-text ${className}`}
-        >
-            {text.split('').map(
-                (letter, index) => {
-
-                    if (letter === ' ') {
-                        return (
-                            <span
-                                key={index}
-                                className="scatter-text__space"
-                            >
-                                {' '}
-                            </span>
-                        )
-                    }
-
-                    const state =
-                        letters.find(
-                            (item) =>
-                                item.index === index
-                        )
-
-                    const scattered =
-                        Boolean(state)
-
-                    return (
-                        <motion.span
-                            key={index}
-                            className={
-                                `scatter-text__letter ${
-                                    scattered
-                                        ? 'scatter-text__letter--scattered'
-                                        : ''
-                                }`
-                            }
-                            animate={{
-                                x:
-                                    state?.x ?? 0,
-
-                                y:
-                                    state?.y ?? 0,
-
-                                rotate:
-                                    state?.rotate ?? 0,
-                            }}
-                            transition={{
-                                duration,
-                                ease: [
-                                    .16,
-                                    1,
-                                    .3,
-                                    1,
-                                ],
-                            }}
-                            onMouseEnter={() => {
-
-                                if (scattered) {
-                                    returnLetter(
-                                        index
-                                    )
-
-                                    return
-                                }
-
-                                scatterLetter(
-                                    index
-                                )
-                            }}
-                        >
-                            {letter}
-                        </motion.span>
-                    )
-                }
-            )}
-        </span>
-    )
+      })}
+    </span>
+  )
 }
 
 export default ScatterText

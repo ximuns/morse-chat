@@ -1,290 +1,232 @@
 .room-form {
-    position: relative;
+  position: relative;
 
-    z-index: 3;
+  z-index: 3;
 
-    display: grid;
+  display: grid;
 
-    grid-template-columns:
-        minmax(280px, 0.9fr)
-        minmax(320px, 0.65fr);
+  grid-template-columns:
+    minmax(280px, 0.9fr)
+    minmax(320px, 0.65fr);
 
-    align-items: center;
+  align-items: center;
 
-    gap: 12vw;
+  gap: 12vw;
 
-    width: 100%;
+  width: 100%;
 }
-
 
 .room-form__heading {
-    position: relative;
+  position: relative;
 }
-
 
 .room-form__eyebrow {
-    margin-bottom: 28px;
+  margin-bottom: 28px;
 
-    font-size: 11px;
+  font-size: 11px;
 
-    letter-spacing: 0.25em;
+  letter-spacing: 0.25em;
 
-    color:
-        rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.38);
 }
-
 
 .room-form__title {
-    margin: 0;
+  margin: 0;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 
-    font-size:
-        clamp(
-            80px,
-            10vw,
-            150px
-        );
+  font-size: clamp(80px, 10vw, 150px);
 
-    font-weight: 300;
+  font-weight: 300;
 
-    line-height: 0.78;
+  line-height: 0.78;
 
-    letter-spacing:
-        -0.07em;
+  letter-spacing: -0.07em;
 
-    color:
-        rgba(238, 238, 235, 0.94);
+  color: rgba(238, 238, 235, 0.94);
 }
-
 
 .room-form__title span {
-    color:
-        #d8dd36;
+  color: #d8dd36;
 
-    margin-left: 5px;
+  margin-left: 5px;
 }
-
 
 .room-form__body {
-    width: 100%;
+  width: 100%;
 
-    max-width: 440px;
+  max-width: 440px;
 }
-
 
 .room-form__field {
-    display: block;
+  display: block;
 
-    margin-bottom: 38px;
+  margin-bottom: 38px;
 }
 
-
 .room-form__label {
-    display: block;
+  display: block;
 
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 
-    font-size: 10px;
+  font-size: 10px;
 
-    letter-spacing: 0.18em;
+  letter-spacing: 0.18em;
 
-    color:
-        rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.38);
 }
 
 .room-form__input {
-    display: block;
+  display: block;
 
-    width: 100%;
+  width: 100%;
 
-    height: 58px;
+  height: 58px;
 
-    padding:
-        0 18px;
+  padding: 0 18px;
 
-    border: 1px solid
-        rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 
-    outline: none;
+  outline: none;
 
-    background:
-        rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.025);
 
-    color:
-        rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.88);
 
-    font-family: inherit;
+  font-family: inherit;
 
-    font-size: 14px;
+  font-size: 14px;
 
-    letter-spacing: 0.08em;
+  letter-spacing: 0.08em;
 
-    transition:
-        border-color 0.3s ease,
-        background 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
-
 
 .room-form__input::placeholder {
-    color:
-        rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.2);
 }
 
-
 .room-form__input:focus {
-    border-color:
-        rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
 
-    background:
-        rgba(255, 255, 255, 0.045);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .room-form__code-row {
-    display: flex;
+  display: flex;
 
-    width: 100%;
+  width: 100%;
 }
-
 
 .room-form__input--code {
-    letter-spacing:
-        0.25em;
+  letter-spacing: 0.25em;
 
-    font-size: 18px;
+  font-size: 18px;
 
-    font-weight: 500;
+  font-weight: 500;
 }
-
 
 .room-form__regenerate {
-    flex-shrink: 0;
+  flex-shrink: 0;
 
-    width: 58px;
+  width: 58px;
 
-    margin-left: 8px;
+  margin-left: 8px;
 
-    border: 1px solid
-        rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 
-    color:
-        rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.55);
 
-    font-size: 20px;
+  font-size: 20px;
 
-    transition:
-        border-color 0.3s ease,
-        color 0.3s ease,
-        transform 0.4s ease;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.4s ease;
 }
 
-
 .room-form__regenerate:hover {
-    color: #fff;
+  color: #fff;
 
-    border-color:
-        rgba(255, 255, 255, 0.45);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .room-form__submit {
-    display: flex;
+  display: flex;
 
-    align-items: center;
+  align-items: center;
 
-    justify-content: space-between;
+  justify-content: space-between;
 
-    width: 100%;
+  width: 100%;
 
-    height: 66px;
+  height: 66px;
 
-    padding:
-        0 20px;
+  padding: 0 20px;
 
-    margin-top: 12px;
+  margin-top: 12px;
 
-    border: 1px solid
-        rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.24);
 
-    color:
-        rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.85);
 
-    background:
-        rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.025);
 
-    font-size: 11px;
+  font-size: 11px;
 
-    letter-spacing:
-        0.15em;
+  letter-spacing: 0.15em;
 
-    transition:
-        background 0.35s ease,
-        border-color 0.35s ease;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease;
 }
-
 
 .room-form__submit span:last-child {
-    font-size: 19px;
+  font-size: 19px;
 
-    transition:
-        transform 0.35s ease;
+  transition: transform 0.35s ease;
 }
-
 
 .room-form__submit:hover {
-    background:
-        rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.07);
 
-    border-color:
-        rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.55);
 }
 
-
-.room-form__submit:hover
-.room-form__submit span:last-child {
-
-    transform:
-        translateX(8px);
+.room-form__submit:hover .room-form__submit span:last-child {
+  transform: translateX(8px);
 }
 
 @media (max-width: 800px) {
+  .room-form {
+    grid-template-columns: 1fr;
 
-    .room-form {
-        grid-template-columns: 1fr;
+    gap: 55px;
 
-        gap: 55px;
+    padding-top: 50px;
+  }
 
-        padding-top: 50px;
-    }
+  .room-form__title {
+    font-size: clamp(65px, 19vw, 110px);
+  }
 
-    .room-form__title {
-        font-size:
-            clamp(
-                65px,
-                19vw,
-                110px
-            );
-    }
-
-    .room-form__body {
-        max-width: none;
-    }
+  .room-form__body {
+    max-width: none;
+  }
 }
 
-
 @media (max-width: 650px) {
+  .room-form {
+    gap: 45px;
+  }
 
-    .room-form {
-        gap: 45px;
-    }
+  .room-form__eyebrow {
+    margin-bottom: 20px;
+  }
 
-    .room-form__eyebrow {
-        margin-bottom: 20px;
-    }
-
-    .room-form__field {
-        margin-bottom: 28px;
-    }
+  .room-form__field {
+    margin-bottom: 28px;
+  }
 }

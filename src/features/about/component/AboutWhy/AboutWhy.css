@@ -1,361 +1,296 @@
 .about-why {
-    position: relative;
+  position: relative;
 
-    min-height: 100vh;
+  min-height: 100vh;
 
-    padding:
-        160px
-        7vw
-        180px;
+  padding: 160px 7vw 180px;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    color: #e7e8e4;
+  color: #e7e8e4;
 }
-
 
 /* =========================================
    NUMBER
 ========================================= */
 
 .about-why__number {
-    margin-bottom: 100px;
+  margin-bottom: 100px;
 
-    font-size: 10px;
+  font-size: 10px;
 
-    line-height: 1;
+  line-height: 1;
 
-    letter-spacing: .28em;
+  letter-spacing: 0.28em;
 
-    color: rgba(
-        231,
-        232,
-        228,
-        .3
-    );
+  color: rgba(231, 232, 228, 0.3);
 }
-
 
 /* =========================================
    MAIN GRID
 ========================================= */
 
 .about-why__layout {
-    display: grid;
+  display: grid;
 
-    grid-template-columns:
-        minmax(0, 1.5fr)
-        minmax(280px, .5fr);
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(280px, 0.5fr);
 
-    gap: 7vw;
+  gap: 7vw;
 
-    align-items: center;
+  align-items: center;
 }
-
 
 /* =========================================
    LEFT
 ========================================= */
 
 .about-why__visual {
-    position: relative;
+  position: relative;
 
-    min-height: 560px;
+  min-height: 560px;
 
-    display: flex;
+  display: flex;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
-
 
 /* =========================================
    HEADLINE
 ========================================= */
 
 .about-why__headline {
-    width: max-content;
+  width: max-content;
 
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
+  flex-direction: column;
 
-    align-items: flex-start;
+  align-items: flex-start;
 
-    user-select: none;
+  user-select: none;
 }
-
 
 /* =========================================
    WORD
 ========================================= */
 
 .about-why__word {
-    line-height: .76;
+  line-height: 0.76;
 
-    font-weight: 300;
+  font-weight: 300;
 
-    letter-spacing: -.085em;
+  letter-spacing: -0.085em;
 
-    white-space: nowrap;
+  white-space: nowrap;
 }
-
 
 /* =========================================
    BIG WORD
 ========================================= */
 
 .about-why__word--large {
-    font-size: clamp(
-        110px,
-        16vw,
-        280px
-    );
+  font-size: clamp(110px, 16vw, 280px);
 }
-
 
 /* =========================================
    SMALL WORD
 ========================================= */
 
 .about-why__word--medium {
-    margin-left: 12vw;
+  margin-left: 12vw;
 
-    font-size: clamp(
-        65px,
-        8vw,
-        135px
-    );
+  font-size: clamp(65px, 8vw, 135px);
 }
-
 
 /* =========================================
    LAST WORD
 ========================================= */
 
 .about-why__word--offset {
-    margin-left: 20vw;
+  margin-left: 20vw;
 }
-
 
 /* =========================================
    HINT
 ========================================= */
 
 .about-why__hint {
-    position: absolute;
+  position: absolute;
 
-    left: 50%;
-    bottom: 15px;
+  left: 50%;
+  bottom: 15px;
 
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 
-    font-size: 8px;
+  font-size: 8px;
 
-    letter-spacing: .3em;
+  letter-spacing: 0.3em;
 
-    white-space: nowrap;
+  white-space: nowrap;
 
-    color: rgba(
-        231,
-        232,
-        228,
-        .28
-    );
+  color: rgba(231, 232, 228, 0.28);
 
-    pointer-events: none;
+  pointer-events: none;
 }
-
 
 /* =========================================
    RIGHT
 ========================================= */
 
 .about-why__content {
-    width: 100%;
+  width: 100%;
 
-    max-width: 390px;
+  max-width: 390px;
 
-    align-self: center;
+  align-self: center;
 }
-
 
 /* =========================================
    LABEL
 ========================================= */
 
 .about-why__label {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
 
-    font-size: 10px;
+  font-size: 10px;
 
-    letter-spacing: .3em;
+  letter-spacing: 0.3em;
 
-    color: rgba(
-        231,
-        232,
-        228,
-        .35
-    );
+  color: rgba(231, 232, 228, 0.35);
 }
-
 
 /* =========================================
    DESCRIPTION
 ========================================= */
 
 .about-why__description {
-    display: flex;
+  display: flex;
 
-    flex-direction: column;
+  flex-direction: column;
 
-    gap: 30px;
+  gap: 30px;
 }
-
 
 .about-why__description p {
-    max-width: 370px;
+  max-width: 370px;
 
-    margin: 0;
+  margin: 0;
 
-    font-size: 14px;
+  font-size: 14px;
 
-    line-height: 1.8;
+  line-height: 1.8;
 
-    color: rgba(
-        231,
-        232,
-        228,
-        .52
-    );
+  color: rgba(231, 232, 228, 0.52);
 }
-
 
 .about-why__description p:last-child {
-    color: rgba(
-        231,
-        232,
-        228,
-        .78
-    );
+  color: rgba(231, 232, 228, 0.78);
 }
-
 
 /* =========================================
    LARGE DESKTOP
 ========================================= */
 
 @media (min-width: 1500px) {
+  .about-why {
+    padding-left: 9vw;
+    padding-right: 9vw;
+  }
 
-    .about-why {
-        padding-left: 9vw;
-        padding-right: 9vw;
-    }
-
-    .about-why__word--large {
-        font-size: 280px;
-    }
-
+  .about-why__word--large {
+    font-size: 280px;
+  }
 }
-
 
 /* =========================================
    TABLET
 ========================================= */
 
 @media (max-width: 900px) {
+  .about-why {
+    min-height: auto;
 
-    .about-why {
-        min-height: auto;
+    padding: 120px 7vw 150px;
+  }
 
-        padding:
-            120px
-            7vw
-            150px;
-    }
+  .about-why__layout {
+    grid-template-columns: 1fr;
 
-    .about-why__layout {
-        grid-template-columns: 1fr;
+    gap: 100px;
+  }
 
-        gap: 100px;
-    }
+  .about-why__visual {
+    min-height: 420px;
+  }
 
-    .about-why__visual {
-        min-height: 420px;
-    }
+  .about-why__word--large {
+    font-size: 17vw;
+  }
 
-    .about-why__word--large {
-        font-size: 17vw;
-    }
+  .about-why__word--medium {
+    font-size: 9vw;
 
-    .about-why__word--medium {
-        font-size: 9vw;
+    margin-left: 10vw;
+  }
 
-        margin-left: 10vw;
-    }
+  .about-why__word--offset {
+    margin-left: 16vw;
+  }
 
-    .about-why__word--offset {
-        margin-left: 16vw;
-    }
-
-    .about-why__content {
-        max-width: 500px;
-    }
-
+  .about-why__content {
+    max-width: 500px;
+  }
 }
-
 
 /* =========================================
    MOBILE
 ========================================= */
 
 @media (max-width: 600px) {
+  .about-why {
+    padding: 100px 22px 130px;
+  }
 
-    .about-why {
-        padding:
-            100px
-            22px
-            130px;
-    }
+  .about-why__number {
+    margin-bottom: 70px;
+  }
 
-    .about-why__number {
-        margin-bottom: 70px;
-    }
+  .about-why__visual {
+    min-height: 280px;
+  }
 
-    .about-why__visual {
-        min-height: 280px;
-    }
+  .about-why__word--large {
+    font-size: 17vw;
+  }
 
-    .about-why__word--large {
-        font-size: 17vw;
-    }
+  .about-why__word--medium {
+    font-size: 9vw;
 
-    .about-why__word--medium {
-        font-size: 9vw;
+    margin-left: 8vw;
+  }
 
-        margin-left: 8vw;
-    }
+  .about-why__word--offset {
+    margin-left: 14vw;
+  }
 
-    .about-why__word--offset {
-        margin-left: 14vw;
-    }
+  .about-why__hint {
+    bottom: -15px;
 
-    .about-why__hint {
-        bottom: -15px;
+    font-size: 7px;
+  }
 
-        font-size: 7px;
-    }
+  .about-why__label {
+    margin-bottom: 40px;
+  }
 
-    .about-why__label {
-        margin-bottom: 40px;
-    }
+  .about-why__description {
+    gap: 24px;
+  }
 
-    .about-why__description {
-        gap: 24px;
-    }
-
-    .about-why__description p {
-        font-size: 13px;
-    }
-
+  .about-why__description p {
+    font-size: 13px;
+  }
 }

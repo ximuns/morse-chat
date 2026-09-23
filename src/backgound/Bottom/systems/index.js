@@ -1,15 +1,7 @@
-export {
-    createMorse,
-} from './createMorse'
+export { createMorse } from './createMorse'
 
-export {
-    createSideField,
-} from './createSideField'
+export { createSideField } from './createSideField'
 
-export {
-    createHorizonParticles,
-} from './createHorizonParticles'
+export { createHorizonParticles } from './createHorizonParticles'
 
-export {
-    createGlow,
-} from './createGlow'
+export { createGlow } from './createGlow'

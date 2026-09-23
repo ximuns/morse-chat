@@ -3,136 +3,84 @@ import * as THREE from 'three'
 import { createGlowTexture } from '../geometry/createGlowTexture'
 import { GLOW } from '../config/settings'
 
-export function createGlow(
-    glowGroup,
-    width,
-    height
-) {
-    const glowTexture = createGlowTexture()
+export function createGlow(glowGroup, width, height) {
+  const glowTexture = createGlowTexture()
 
-    const glowMaterial =
-        new THREE.SpriteMaterial({
-            map: glowTexture,
+  const glowMaterial = new THREE.SpriteMaterial({
+    map: glowTexture,
 
-            transparent: true,
+    transparent: true,
 
-            opacity: GLOW.opacity,
+    opacity: GLOW.opacity,
 
-            depthWrite: false,
+    depthWrite: false,
 
-            blending:
-                THREE.AdditiveBlending,
-        })
+    blending: THREE.AdditiveBlending,
+  })
 
-    const glow =
-        new THREE.Sprite(
-            glowMaterial
-        )
+  const glow = new THREE.Sprite(glowMaterial)
 
-    glow.scale.set(
-        GLOW.width,
-        GLOW.height,
-        1
-    )
+  glow.scale.set(GLOW.width, GLOW.height, 1)
 
-    glow.position.set(
-        0,
-        -height / 2 +
-            height * GLOW.y,
-        0
-    )
+  glow.position.set(0, -height / 2 + height * GLOW.y, 0)
 
-    glowGroup.add(glow)
+  glowGroup.add(glow)
 
-    // -----------------------------------------
-    // AMBIENT GLOW
-    // -----------------------------------------
+  // -----------------------------------------
+  // AMBIENT GLOW
+  // -----------------------------------------
 
-    const ambientTexture =
-        createGlowTexture()
+  const ambientTexture = createGlowTexture()
 
-    const ambientMaterial =
-        new THREE.SpriteMaterial({
-            map: ambientTexture,
+  const ambientMaterial = new THREE.SpriteMaterial({
+    map: ambientTexture,
 
-            transparent: true,
+    transparent: true,
 
-            opacity:
-                GLOW.ambientOpacity,
+    opacity: GLOW.ambientOpacity,
 
-            depthWrite: false,
+    depthWrite: false,
 
-            blending:
-                THREE.AdditiveBlending,
-        })
+    blending: THREE.AdditiveBlending,
+  })
 
-    const ambientGlow =
-        new THREE.Sprite(
-            ambientMaterial
-        )
+  const ambientGlow = new THREE.Sprite(ambientMaterial)
 
-    ambientGlow.scale.set(
-        GLOW.ambientWidth,
-        GLOW.ambientHeight,
-        1
-    )
+  ambientGlow.scale.set(GLOW.ambientWidth, GLOW.ambientHeight, 1)
 
-    ambientGlow.position.set(
-        0,
-        -height / 2 +
-            height * GLOW.y +
-            GLOW.ambientOffsetY,
-        -0.01
-    )
+  ambientGlow.position.set(0, -height / 2 + height * GLOW.y + GLOW.ambientOffsetY, -0.01)
 
-    glowGroup.add(ambientGlow)
+  glowGroup.add(ambientGlow)
 
-    // -----------------------------------------
-    // SOFT GLOW
-    // -----------------------------------------
+  // -----------------------------------------
+  // SOFT GLOW
+  // -----------------------------------------
 
-    const softTexture =
-        createGlowTexture()
+  const softTexture = createGlowTexture()
 
-    const softMaterial =
-        new THREE.SpriteMaterial({
-            map: softTexture,
+  const softMaterial = new THREE.SpriteMaterial({
+    map: softTexture,
 
-            transparent: true,
+    transparent: true,
 
-            opacity:
-                GLOW.softOpacity,
+    opacity: GLOW.softOpacity,
 
-            depthWrite: false,
+    depthWrite: false,
 
-            blending:
-                THREE.AdditiveBlending,
-        })
+    blending: THREE.AdditiveBlending,
+  })
 
-    const softGlow =
-        new THREE.Sprite(
-            softMaterial
-        )
+  const softGlow = new THREE.Sprite(softMaterial)
 
-    softGlow.scale.set(
-        GLOW.softWidth,
-        GLOW.softHeight,
-        1
-    )
+  softGlow.scale.set(GLOW.softWidth, GLOW.softHeight, 1)
 
-    softGlow.position.set(
-        0,
-        -height / 2 +
-            height * GLOW.y +
-            GLOW.softOffsetY,
-        0.01
-    )
+  softGlow.position.set(0, -height / 2 + height * GLOW.y + GLOW.softOffsetY, 0.01)
 
-    glowGroup.add(softGlow)
+  glowGroup.add(softGlow)
 
-    return {
-        glow,
-        ambientGlow,
-        softGlow,
-    }
+  return {
+    glow,
+    ambientGlow,
+    softGlow,
+  }
 }
