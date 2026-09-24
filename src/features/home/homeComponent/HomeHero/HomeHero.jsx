@@ -1,3 +1,4 @@
+import IdentityTest from '../../../identity/IdentityAuthTest/IdentityTest'
 import JoinRoom from '../../../rooms/JoinRoom/JoinRoom'
 import RoomButton from '../../../rooms/RoomButton/RoomButton'
 import './HomeHero.css'
@@ -25,6 +26,7 @@ function HomeHero({ onCreateRoom, onJoinRoom }) {
 
         <JoinRoom onJoin={onJoinRoom} />
       </div>
+      {/* <IdentityTest /> */}
     </section>
   )
 }

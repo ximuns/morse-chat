@@ -5,8 +5,9 @@ import './JoinRoom.css'
 
 function JoinRoom({ onJoin }) {
   const [isOpen, setIsOpen] = useState(false)
-
   const [code, setCode] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const inputRef = useRef(null)
 
@@ -24,57 +25,73 @@ function JoinRoom({ onJoin }) {
 
   function handleOpen() {
     setIsOpen(true)
+    setError('')
   }
 
   function handleClose() {
-    setIsOpen(false)
+    if (isLoading) return
 
+    setIsOpen(false)
     setCode('')
+    setError('')
   }
 
   function handleChange(event) {
     const value = event.target.value
       .toUpperCase()
       .replace(/[^A-Z0-9]/g, '')
-      .slice(0, 8)
+      .slice(0, 6)
 
     setCode(value)
+    setError('')
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
-    if (!code) return
+    if (!code || isLoading) {
+      return
+    }
 
-    onJoin?.(code)
+    try {
+      setIsLoading(true)
+      setError('')
+
+      await onJoin?.(code)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <div className={['join-room', isOpen ? 'join-room--open' : ''].join(' ')}>
-      <AnimatePresence mode="wait" initial={false}>
+    <div
+      className={[
+        'join-room',
+        isOpen ? 'join-room--open' : '',
+      ].join(' ')}
+    >
+      <AnimatePresence
+        mode="wait"
+        initial={false}
+      >
         {!isOpen ? (
           <motion.button
             key="trigger"
-
             className="join-room__trigger"
-
             type="button"
-
             onClick={handleOpen}
-
             initial={{
               opacity: 1,
             }}
-
             animate={{
               opacity: 1,
             }}
-
             exit={{
               opacity: 0,
               y: -4,
             }}
-
             transition={{
               duration: 0.38,
               ease: [0.4, 0, 0.2, 1],
@@ -82,31 +99,27 @@ function JoinRoom({ onJoin }) {
           >
             <span>ВОЙТИ В КОМНАТУ</span>
 
-            <span className="join-room__arrow">→</span>
+            <span className="join-room__arrow">
+              →
+            </span>
           </motion.button>
         ) : (
           <motion.form
             key="form"
-
             className="join-room__form"
-
             onSubmit={handleSubmit}
-
             initial={{
               opacity: 0,
               y: 8,
             }}
-
             animate={{
               opacity: 1,
               y: 0,
             }}
-
             exit={{
               opacity: 0,
               y: -5,
             }}
-
             transition={{
               duration: 0.65,
               delay: 0.28,
@@ -116,17 +129,14 @@ function JoinRoom({ onJoin }) {
             <div className="join-room__top">
               <motion.span
                 className="join-room__label"
-
                 initial={{
                   opacity: 0,
                   letterSpacing: '0.1em',
                 }}
-
                 animate={{
                   opacity: 1,
                   letterSpacing: '0.2em',
                 }}
-
                 transition={{
                   duration: 0.65,
                   delay: 0.5,
@@ -138,19 +148,15 @@ function JoinRoom({ onJoin }) {
 
               <motion.button
                 className="join-room__close"
-
                 type="button"
-
                 onClick={handleClose}
-
+                disabled={isLoading}
                 initial={{
                   opacity: 0,
                 }}
-
                 animate={{
                   opacity: 1,
                 }}
-
                 transition={{
                   duration: 0.4,
                   delay: 0.75,
@@ -163,33 +169,29 @@ function JoinRoom({ onJoin }) {
             <div className="join-room__input-row">
               <input
                 ref={inputRef}
-
                 className="join-room__input"
-
                 value={code}
-
                 onChange={handleChange}
-
                 placeholder="ВСТАВЬТЕ КОД"
-
                 autoComplete="off"
-
                 spellCheck="false"
+                disabled={isLoading}
               />
 
               <motion.button
-                className={['join-room__submit', code ? 'join-room__submit--active' : ''].join(' ')}
-
+                className={[
+                  'join-room__submit',
+                  code
+                    ? 'join-room__submit--active'
+                    : '',
+                ].join(' ')}
                 type="submit"
-
-                disabled={!code}
-
+                disabled={!code || isLoading}
                 animate={{
-                  opacity: code ? 1 : 0.25,
-
+                  opacity:
+                    code && !isLoading ? 1 : 0.25,
                   x: code ? 0 : -2,
                 }}
-
                 transition={{
                   duration: 0.35,
                   ease: 'easeOut',
@@ -198,6 +200,12 @@ function JoinRoom({ onJoin }) {
                 →
               </motion.button>
             </div>
+
+            {error && (
+              <div className="join-room__error">
+                {error}
+              </div>
+            )}
 
             <div className="join-room__particles">
               {Array.from({
@@ -209,6 +217,7 @@ function JoinRoom({ onJoin }) {
           </motion.form>
         )}
       </AnimatePresence>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div

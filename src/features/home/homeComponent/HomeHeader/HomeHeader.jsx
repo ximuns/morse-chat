@@ -1,3 +1,5 @@
+import IdentityMenu from '../../../identity/IdentityMenu/IdentityMenu'
+
 import './HomeHeader.css'
 
 function HomeHeader({ onAbout, onRooms }) {
@@ -8,15 +10,29 @@ function HomeHeader({ onAbout, onRooms }) {
       </a>
 
       <nav className="header__nav">
-        <button type="button" className="header__link" onClick={onAbout}>
+        <button
+          type="button"
+          className="header__link"
+          onClick={onAbout}
+        >
           О НАС
         </button>
 
-        <button type="button" className="header__link" onClick={onRooms}>
+        <button
+          type="button"
+          className="header__link"
+          onClick={onRooms}
+        >
           КОМНАТЫ
         </button>
 
-        <button type="button" className="header__morse" aria-label="Morse menu">
+        <IdentityMenu />
+
+        <button
+          type="button"
+          className="header__morse"
+          aria-label="Morse menu"
+        >
           <span className="header__morse-dot" />
           <span className="header__morse-line" />
           <span className="header__morse-dot" />

@@ -1,15 +1,33 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
+
+import { getRooms } from '../../../services/rooms/roomService'
 
 import './RoomScreen.css'
 
 function RoomsScreen({ onBack, onEnterRoom }) {
-  const rooms = []
+  const [rooms, setRooms] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const demoRoom = {
-    id: '7F3A',
-    name: 'NIGHT SIGNAL',
-    members: 4,
+  async function loadRooms() {
+    try {
+      setIsLoading(true)
+      setError('')
+
+      const result = await getRooms()
+
+      setRooms(result)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
+
+  useEffect(() => {
+    loadRooms()
+  }, [])
 
   return (
     <main className="rooms-screen">
@@ -36,9 +54,13 @@ function RoomsScreen({ onBack, onEnterRoom }) {
 
         <header className="rooms-panel__header">
           <div>
-            <span className="rooms-panel__eyebrow">MORSE / NETWORK</span>
+            <span className="rooms-panel__eyebrow">
+              MORSE / NETWORK
+            </span>
 
-            <h1 className="rooms-panel__title">КОМНАТЫ</h1>
+            <h1 className="rooms-panel__title">
+              КОМНАТЫ
+            </h1>
           </div>
 
           <button
@@ -65,10 +87,38 @@ function RoomsScreen({ onBack, onEnterRoom }) {
           <div className="rooms-panel__section">
             <span>ACTIVE ROOMS</span>
 
-            <strong>{rooms.length.toString().padStart(2, '0')}</strong>
+            <strong>
+              {rooms.length
+                .toString()
+                .padStart(2, '0')}
+            </strong>
           </div>
 
-          {rooms.length === 0 && (
+          {isLoading && (
+            <motion.div
+              className="rooms-empty"
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+            >
+              <div className="rooms-empty__mark">
+                <span />
+                <span />
+                <b />
+              </div>
+
+              <h2>СИНХРОНИЗАЦИЯ</h2>
+
+              <p>
+                Получаем список комнат...
+              </p>
+            </motion.div>
+          )}
+
+          {!isLoading && error && (
             <motion.div
               className="rooms-empty"
               initial={{
@@ -79,10 +129,6 @@ function RoomsScreen({ onBack, onEnterRoom }) {
                 opacity: 1,
                 y: 0,
               }}
-              transition={{
-                delay: 0.15,
-                duration: 0.35,
-              }}
             >
               <div className="rooms-empty__mark">
                 <span />
@@ -90,54 +136,110 @@ function RoomsScreen({ onBack, onEnterRoom }) {
                 <b />
               </div>
 
-              <h2>Нет активных комнат</h2>
+              <h2>ОШИБКА СВЯЗИ</h2>
 
-              <p>Когда появятся доступные комнаты, они будут отображаться здесь.</p>
-            </motion.div>
-          )}
-
-          <div className="rooms-demo">
-            <div className="rooms-demo__header">
-              <span>DEMO</span>
-
-              <span>ROOM // {demoRoom.id}</span>
-            </div>
-
-            <div className="rooms-demo__content">
-              <div className="rooms-demo__info">
-                <span className="rooms-demo__label">ROOM</span>
-
-                <h3>{demoRoom.name}</h3>
-
-                <div className="rooms-demo__meta">
-                  <span>{demoRoom.members}</span>
-
-                  <span>MEMBERS</span>
-                </div>
-              </div>
+              <p>{error}</p>
 
               <button
                 type="button"
-                className="rooms-demo__enter"
-                onClick={() => onEnterRoom(demoRoom)}
+                onClick={loadRooms}
               >
-                <span>ВОЙТИ</span>
-
-                <b>→</b>
+                ПОВТОРИТЬ
               </button>
-            </div>
-          </div>
+            </motion.div>
+          )}
 
-          <div className="rooms-panel__info">
-            <span className="rooms-panel__info-dot" />
-            DEMONSTRATION MODE
-          </div>
+          {!isLoading &&
+            !error &&
+            rooms.length === 0 && (
+              <motion.div
+                className="rooms-empty"
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: 0.15,
+                  duration: 0.35,
+                }}
+              >
+                <div className="rooms-empty__mark">
+                  <span />
+                  <span />
+                  <b />
+                </div>
+
+                <h2>Нет активных комнат</h2>
+
+                <p>
+                  Создайте комнату или
+                  войдите по приглашению.
+                </p>
+              </motion.div>
+            )}
+
+          {!isLoading &&
+            !error &&
+            rooms.map((room) => (
+              <motion.article
+                className="rooms-demo"
+                key={room.id}
+                initial={{
+                  opacity: 0,
+                  y: 12,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+              >
+                <div className="rooms-demo__header">
+                  <span>ACTIVE</span>
+
+                  <span>
+                    ROOM // {room.code}
+                  </span>
+                </div>
+
+                <div className="rooms-demo__content">
+                  <div className="rooms-demo__info">
+                    <span className="rooms-demo__label">
+                      ROOM
+                    </span>
+
+                    <h3>{room.name}</h3>
+
+                    <div className="rooms-demo__meta">
+                      <span>•••</span>
+
+                      <span>ACTIVE</span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="rooms-demo__enter"
+                    onClick={() =>
+                      onEnterRoom(room)
+                    }
+                  >
+                    <span>ВОЙТИ</span>
+
+                    <b>→</b>
+                  </button>
+                </div>
+              </motion.article>
+            ))}
         </div>
 
         <footer className="rooms-panel__footer">
           <span>CONNECTION</span>
 
-          <span>LOCAL</span>
+          <span>SECURE</span>
         </footer>
       </motion.aside>
     </main>
