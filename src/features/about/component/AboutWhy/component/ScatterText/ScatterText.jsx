@@ -24,27 +24,12 @@ function ScatterText({ children, className = '', scatter = 260, rotation = 70, d
 
     const sectionRect = section.getBoundingClientRect()
 
-    /*
-     * Увеличиваем область,
-     * в которой может оказаться буква.
-     *
-     * Сейчас она может улететь
-     * практически на всю ширину
-     * и высоту секции.
-     */
-
     const maxX = sectionRect.width * 0.72
 
     const maxY = sectionRect.height * 0.55
 
     const angle = random(0, Math.PI * 2)
 
-    /*
-     * Минимальное расстояние тоже
-     * увеличиваем, чтобы буква
-     * не оказывалась почти рядом
-     * с исходным местом.
-     */
 
     const distance = random(scatter * 0.8, scatter * 1.8)
 
@@ -52,10 +37,6 @@ function ScatterText({ children, className = '', scatter = 260, rotation = 70, d
 
     let y = Math.sin(angle) * distance
 
-    /*
-     * Ограничиваем только самые
-     * крайние значения.
-     */
 
     x = Math.max(-maxX, Math.min(maxX, x))
 

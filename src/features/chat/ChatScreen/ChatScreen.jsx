@@ -510,6 +510,54 @@ function ChatScreen({
         )
     }
 
+    function handleDeleteLast() {
+    clearAnimation()
+    clearHoldTimer()
+
+    setLiveSymbol('')
+    setElapsed(0)
+
+    const current = currentCodeRef.current
+
+    if (current) {
+        const next = current.slice(0, -1)
+
+        currentCodeRef.current = next
+        setCurrentCode(next)
+
+        setGapStage('none')
+        gapStageRef.current = 'none'
+
+        return
+    }
+
+    const value = committedMorse.trim()
+
+    if (!value) {
+        return
+    }
+
+    let next = value
+
+    if (next.endsWith('/')) {
+        next = next.slice(0, -1).trim()
+    } else {
+        next = next
+            .replace(/\s+\S+$/, '')
+            .trim()
+
+        if (next.endsWith('/')) {
+            next = next.slice(0, -1).trim()
+        }
+    }
+
+    setCommittedMorse(next)
+
+    setGapStage('none')
+    gapStageRef.current = 'none'
+    setElapsed(0)
+}
+
     async function handleSend() {
         const finalMorse =
             (
@@ -1181,23 +1229,35 @@ function ChatScreen({
                             </span>
                         </button>
 
-                        <button
-                            type="button"
-                            className="chat__send"
-                            onClick={
-                                handleSend
-                            }
-                            disabled={
-                                isSending ||
-                                !displayMorse.trim()
-                            }
-                        >
-                            {isSending
-                                ? 'ОТПРАВКА...'
-                                : 'ОТПРАВИТЬ'}
+                        <div className="chat__composer-actions">
+                            <button
+                                type="button"
+                                className="chat__delete"
+                                onClick={handleDeleteLast}
+                                disabled={!displayMorse.trim() || isSending}
+                            >
+                                <span>УДАЛИТЬ</span>
+                                <strong>⌫</strong>
+                            </button>
 
-                            <span>→</span>
-                        </button>
+                            <button
+                                type="button"
+                                className="chat__send"
+                                onClick={handleSend}
+                                disabled={
+                                    isSending ||
+                                    !displayMorse.trim()
+                                }
+                            >
+                                <span>
+                                    {isSending
+                                        ? 'ОТПРАВКА...'
+                                        : 'ОТПРАВИТЬ'}
+                                </span>
+
+                                <strong>→</strong>
+                            </button>
+                        </div>
                     </div>
                 </section>
 

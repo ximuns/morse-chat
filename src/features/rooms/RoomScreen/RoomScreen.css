@@ -7,7 +7,6 @@
   pointer-events: none;
 }
 
-/* ПАНЕЛЬ */
 
 .rooms-panel {
   position: absolute;
@@ -48,7 +47,6 @@
   );
 }
 
-/* ТОНКАЯ ПОЛОСКА СЛЕВА */
 
 .rooms-panel__accent {
   position: absolute;
@@ -64,7 +62,6 @@
   opacity: 0.6;
 }
 
-/* HEADER */
 
 .rooms-panel__header {
   display: flex;
@@ -96,7 +93,6 @@
   letter-spacing: -0.05em;
 }
 
-/* CLOSE */
 
 .rooms-panel__close {
   position: relative;
@@ -143,7 +139,6 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-/* MORSE DIVIDER */
 
 .rooms-panel__signal {
   display: flex;
@@ -173,7 +168,6 @@
   width: 24px;
 }
 
-/* CONTENT */
 
 .rooms-panel__content {
   flex: 1;
@@ -186,7 +180,6 @@
   scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
 }
 
-/* ACTIVE ROOMS */
 
 .rooms-panel__section {
   display: flex;
@@ -208,7 +201,6 @@
   font-weight: 400;
 }
 
-/* EMPTY */
 
 .rooms-empty {
   padding: 26px 0 28px;
@@ -264,7 +256,6 @@
   opacity: 0.36;
 }
 
-/* DEMO */
 
 .rooms-demo {
   position: relative;
@@ -345,7 +336,6 @@
   opacity: 1;
 }
 
-/* ENTER */
 
 .rooms-demo__enter {
   flex-shrink: 0;
@@ -390,7 +380,6 @@
   opacity: 0.5;
 }
 
-/* INFO */
 
 .rooms-panel__info {
   display: flex;
@@ -417,7 +406,6 @@
   background: currentColor;
 }
 
-/* FOOTER */
 
 .rooms-panel__footer {
   display: flex;
@@ -435,8 +423,6 @@
 
   opacity: 0.24;
 }
-
-/* MOBILE */
 
 @media (max-width: 700px) {
   .rooms-panel {

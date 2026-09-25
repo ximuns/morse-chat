@@ -171,7 +171,6 @@
   transform: translateX(0) translateY(0) rotate(-45deg);
 }
 
-/* BACKDROP */
 
 .menu-backdrop {
   position: fixed;
@@ -185,7 +184,6 @@
   -webkit-backdrop-filter: blur(8px);
 }
 
-/* MENU */
 
 .morse-menu {
   position: fixed;
@@ -415,8 +413,6 @@
     translate(0, 0);
 }
 
-/* SIGNAL */
-
 .morse-menu__signal {
   margin-top: auto;
 
@@ -520,7 +516,6 @@
   color: rgba(255, 255, 255, 0.2);
 }
 
-/* BOTTOM */
 
 .morse-menu__bottom {
   position: absolute;
@@ -539,7 +534,6 @@
   color: rgba(255, 255, 255, 0.18);
 }
 
-/* TABLET */
 
 @media (max-width: 900px) {
   .header {

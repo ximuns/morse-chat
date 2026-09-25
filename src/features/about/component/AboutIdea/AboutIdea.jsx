@@ -42,24 +42,13 @@ const morseMap = {
   Я: '.-.-',
 }
 
-/*
-    Убираем пробелы и знаки препинания для
-    последовательности преобразования.
-*/
 const letters = message.replace(/[^А-ЯЁ]/g, '').split('')
 
-/*
-    Буква → Morse
-*/
 const conversion = letters.map((letter) => ({
   letter,
   code: morseMap[letter],
 }))
 
-/*
-    Формируем единый Morse-поток.
-    Между словами будет дополнительный промежуток.
-*/
 const wordGroups = ['ПРИВЕТ', 'КАК', 'ТЫ']
 
 const morseStream = []
@@ -75,18 +64,12 @@ wordGroups.forEach((word, wordIndex) => {
       })
     })
 
-    /*
-            Небольшая пауза между буквами
-        */
     morseStream.push({
       char: 'letter-space',
       key: `${wordIndex}-${letterIndex}-space`,
     })
   })
 
-  /*
-        Больше расстояние между словами
-    */
   morseStream.push({
     char: 'word-space',
     key: `${wordIndex}-word-space`,
@@ -97,11 +80,6 @@ function MessageLetter({ letter, index, progress }) {
   const center = (letters.length - 1) / 2
 
   const distance = index - center
-
-  /*
-        Сначала буквы стоят на месте.
-        Затем начинают расходиться.
-    */
   const x = useTransform(progress, [0.12, 0.23, 0.37, 0.5], [0, 0, distance * 10, distance * 19])
 
   const y = useTransform(progress, [0.12, 0.25, 0.4, 0.52], [0, -4, distance * 8, distance * 26])
@@ -187,10 +165,6 @@ function MorseGlyph({ char, index, progress }) {
 
   const distance = index - center
 
-  /*
-        При появлении символы приходят
-        из разных сторон.
-    */
   const x = useTransform(progress, [0.43, 0.55, 0.69, 0.82], [distance * 28, distance * 13, 0, 0])
 
   const y = useTransform(
@@ -250,41 +224,17 @@ function AboutIdea() {
     offset: ['start start', 'end end'],
   })
 
-  /*
-        ======================================================
-        INTRO
-        ======================================================
-    */
-
   const introOpacity = useTransform(scrollYProgress, [0, 0.05, 0.16, 0.29], [0, 1, 1, 0])
 
   const introY = useTransform(scrollYProgress, [0, 0.15, 0.29], [45, 0, -35])
-
-  /*
-        ======================================================
-        MESSAGE
-        ======================================================
-    */
 
   const messageOpacity = useTransform(scrollYProgress, [0.07, 0.15, 0.4, 0.57], [0, 1, 1, 0])
 
   const messageScale = useTransform(scrollYProgress, [0.08, 0.2, 0.43, 0.56], [0.9, 1, 0.96, 0.82])
 
-  /*
-        ======================================================
-        CONVERSION
-        ======================================================
-    */
-
   const conversionOpacity = useTransform(scrollYProgress, [0.22, 0.3, 0.52, 0.66], [0, 1, 1, 0])
 
   const conversionScale = useTransform(scrollYProgress, [0.24, 0.39, 0.57], [0.84, 1, 1.02])
-
-  /*
-        ======================================================
-        MORSE
-        ======================================================
-    */
 
   const morseOpacity = useTransform(scrollYProgress, [0.48, 0.6, 0.81, 0.91], [0, 1, 1, 0])
 
@@ -292,21 +242,10 @@ function AboutIdea() {
 
   const morseY = useTransform(scrollYProgress, [0.5, 0.71, 0.9], [70, 0, -10])
 
-  /*
-        ======================================================
-        FINAL
-        ======================================================
-    */
-
   const finalOpacity = useTransform(scrollYProgress, [0.76, 0.87, 1], [0, 1, 1])
 
   const finalY = useTransform(scrollYProgress, [0.77, 0.95], [55, 0])
 
-  /*
-        ======================================================
-        RIGHT CHAPTER NAV
-        ======================================================
-    */
 
   const stage1 = useTransform(scrollYProgress, [0, 0.17, 0.3], [1, 1, 0.25])
 
@@ -319,9 +258,6 @@ function AboutIdea() {
   return (
     <section ref={sectionRef} className="about-idea">
       <div className="about-idea__sticky">
-        {/* ==================================================
-                    BACKGROUND
-                ================================================== */}
 
         <div className="about-idea__background" />
 
@@ -329,9 +265,6 @@ function AboutIdea() {
 
         <div className="about-idea__glow" />
 
-        {/* ==================================================
-                    TOP HEADER
-                ================================================== */}
 
         <header className="about-idea__header">
           <span>02</span>
@@ -340,10 +273,6 @@ function AboutIdea() {
 
           <span>ОТ СЛОВА К СИГНАЛУ</span>
         </header>
-
-        {/* ==================================================
-                    CHAPTERS
-                ================================================== */}
 
         <aside className="about-idea__chapters">
           <motion.div
@@ -377,10 +306,6 @@ function AboutIdea() {
           </motion.div>
         </aside>
 
-        {/* ==================================================
-                    INTRO — TOP LEFT
-                ================================================== */}
-
         <motion.div
           className="about-idea__intro"
           style={{
@@ -399,10 +324,6 @@ function AboutIdea() {
             Сообщение начинается с мысли. В MORSE.CHAT оно не меняет смысл — только форму передачи.
           </p>
         </motion.div>
-
-        {/* ==================================================
-                    MESSAGE — CENTER
-                ================================================== */}
 
         <motion.div
           className="about-idea__message"
@@ -427,9 +348,6 @@ function AboutIdea() {
           <div className="about-idea__message-text">Сначала это просто фраза.</div>
         </motion.div>
 
-        {/* ==================================================
-                    CONVERSION — CENTER / UPPER
-                ================================================== */}
 
         <motion.div
           className="about-idea__conversion"
@@ -465,9 +383,6 @@ function AboutIdea() {
           </div>
         </motion.div>
 
-        {/* ==================================================
-                    MORSE — CENTRAL LOWER
-                ================================================== */}
 
         <motion.div
           className="about-idea__morse"
@@ -516,10 +431,6 @@ function AboutIdea() {
           </p>
         </motion.div>
 
-        {/* ==================================================
-                    FINAL — BOTTOM LEFT
-                ================================================== */}
-
         <motion.div
           className="about-idea__final"
           style={{
@@ -537,10 +448,6 @@ function AboutIdea() {
 
           <div className="about-idea__final-line about-idea__final-line--muted">ОСТАЁТСЯ.</div>
         </motion.div>
-
-        {/* ==================================================
-                    BOTTOM RIGHT EXAMPLE
-                ================================================== */}
 
         <motion.div
           className="about-idea__example"
@@ -562,11 +469,6 @@ function AboutIdea() {
             <div className="about-idea__example-code">.--. .-. .. .-- . -</div>
           </div>
         </motion.div>
-
-        {/* ==================================================
-                    BOTTOM PROGRESS
-                ================================================== */}
-
         <div className="about-idea__bottom">
           <span>SCROLL</span>
 

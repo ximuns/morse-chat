@@ -9,10 +9,6 @@
   color: #e7e8e4;
 }
 
-/* -------------------------------- */
-/* TOP */
-/* -------------------------------- */
-
 .about-how__top {
   display: grid;
   grid-template-columns: 80px 1fr auto;
@@ -39,10 +35,6 @@
 .about-how__status {
   opacity: 0.25;
 }
-
-/* -------------------------------- */
-/* HEADING */
-/* -------------------------------- */
 
 .about-how__heading {
   display: grid;
@@ -80,10 +72,6 @@
   color: rgba(231, 232, 228, 0.48);
 }
 
-/* -------------------------------- */
-/* SYSTEM */
-/* -------------------------------- */
-
 .about-how__system {
   display: grid;
   grid-template-columns: minmax(220px, 0.35fr) minmax(500px, 1fr);
@@ -92,9 +80,6 @@
   flex: 1;
 }
 
-/* -------------------------------- */
-/* STEPS */
-/* -------------------------------- */
 
 .about-how__steps {
   display: flex;
@@ -192,9 +177,6 @@
   transform: scale(1);
 }
 
-/* -------------------------------- */
-/* VISUAL */
-/* -------------------------------- */
 
 .about-how__visual {
   position: relative;
@@ -233,9 +215,6 @@
   mask-image: radial-gradient(ellipse at center, black, transparent 80%);
 }
 
-/* -------------------------------- */
-/* META */
-/* -------------------------------- */
 
 .protocol-meta {
   position: absolute;
@@ -253,9 +232,6 @@
   color: rgba(231, 232, 228, 0.28);
 }
 
-/* -------------------------------- */
-/* ROUTE */
-/* -------------------------------- */
 
 .protocol-route {
   position: absolute;
@@ -362,9 +338,6 @@
   color: rgba(231, 232, 228, 0.7);
 }
 
-/* -------------------------------- */
-/* SCENE */
-/* -------------------------------- */
 
 .protocol-scene {
   position: absolute;
@@ -467,10 +440,6 @@
   }
 }
 
-/* -------------------------------- */
-/* CORNERS */
-/* -------------------------------- */
-
 .protocol-corner {
   position: absolute;
 
@@ -499,9 +468,6 @@
   right: 16px;
 }
 
-/* -------------------------------- */
-/* BOTTOM */
-/* -------------------------------- */
 
 .about-how__bottom {
   display: flex;
@@ -515,10 +481,6 @@
 
   color: rgba(231, 232, 228, 0.22);
 }
-
-/* -------------------------------- */
-/* MOBILE */
-/* -------------------------------- */
 
 @media (max-width: 800px) {
   .about-how {

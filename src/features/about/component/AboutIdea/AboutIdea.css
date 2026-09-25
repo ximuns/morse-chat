@@ -1,10 +1,6 @@
 .about-idea {
   position: relative;
 
-  /*
-        Больше пространства для истории,
-        но сама визуальная сцена всегда 100vh.
-    */
   height: 600vh;
 
   background: #050607;
@@ -30,10 +26,6 @@
 
   isolation: isolate;
 }
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
 
 .about-idea__background {
   position: absolute;
@@ -87,9 +79,6 @@
   pointer-events: none;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
 
 .about-idea__header {
   position: absolute;
@@ -126,9 +115,6 @@
   color: rgba(230, 234, 229, 0.42);
 }
 
-/* =========================================================
-   CHAPTERS — TOP RIGHT
-========================================================= */
 
 .about-idea__chapters {
   position: absolute;
@@ -174,9 +160,6 @@
   color: rgba(230, 234, 229, 0.86);
 }
 
-/* =========================================================
-   INTRO — TOP LEFT
-========================================================= */
 
 .about-idea__intro {
   position: absolute;
@@ -225,10 +208,6 @@
   color: rgba(230, 234, 229, 0.76);
 }
 
-/* =========================================================
-   MESSAGE — CENTER
-========================================================= */
-
 .about-idea__message {
   position: absolute;
 
@@ -266,10 +245,6 @@
 
   white-space: nowrap;
 
-  /*
-        Специально ограничиваем размер,
-        чтобы строка не резалась экраном.
-    */
   font-size: clamp(42px, 8.2vw, 148px);
 
   font-weight: 300;
@@ -301,9 +276,6 @@
   color: rgba(230, 234, 229, 0.72);
 }
 
-/* =========================================================
-   CONVERSION — CENTER / UPPER
-========================================================= */
 
 .about-idea__conversion {
   position: absolute;
@@ -434,9 +406,6 @@
   text-align: right;
 }
 
-/* =========================================================
-   MORSE — CENTRAL LOWER
-========================================================= */
 
 .about-idea__morse {
   position: absolute;
@@ -603,9 +572,6 @@
   color: rgba(230, 234, 229, 0.72);
 }
 
-/* =========================================================
-   FINAL — BOTTOM LEFT
-========================================================= */
 
 .about-idea__final {
   position: absolute;
@@ -651,9 +617,6 @@
   color: rgba(230, 234, 229, 0.52);
 }
 
-/* =========================================================
-   EXAMPLE — BOTTOM RIGHT
-========================================================= */
 
 .about-idea__example {
   position: absolute;
@@ -727,10 +690,6 @@
   color: rgba(230, 234, 229, 0.78);
 }
 
-/* =========================================================
-   BOTTOM PROGRESS
-========================================================= */
-
 .about-idea__bottom {
   position: absolute;
 
@@ -771,10 +730,6 @@
   background: rgba(230, 234, 229, 0.76);
 }
 
-/* =========================================================
-   TABLET
-========================================================= */
-
 @media (max-width: 1100px) {
   .about-idea {
     height: 590vh;
@@ -809,16 +764,11 @@
   }
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 640px) {
   .about-idea {
     height: 570vh;
   }
 
-  /* HEADER */
 
   .about-idea__header {
     top: 27px;
@@ -836,7 +786,6 @@
     display: none;
   }
 
-  /* CHAPTERS */
 
   .about-idea__chapters {
     top: auto;
@@ -857,8 +806,6 @@
   .about-idea__chapters strong {
     font-size: 8px;
   }
-
-  /* INTRO */
 
   .about-idea__intro {
     left: 24px;
@@ -884,7 +831,6 @@
     font-size: 11px;
   }
 
-  /* MESSAGE */
 
   .about-idea__message {
     width: calc(100vw - 32px);
@@ -910,7 +856,6 @@
     font-size: 9px;
   }
 
-  /* CONVERSION */
 
   .about-idea__conversion {
     width: calc(100vw - 40px);
@@ -963,7 +908,6 @@
     text-align: left;
   }
 
-  /* MORSE */
 
   .about-idea__morse {
     width: calc(100vw - 32px);
@@ -1039,8 +983,6 @@
     font-size: 10px;
   }
 
-  /* FINAL */
-
   .about-idea__final {
     left: 24px;
 
@@ -1060,8 +1002,6 @@
   .about-idea__final-line--muted {
     margin-left: 7vw;
   }
-
-  /* EXAMPLE */
 
   .about-idea__example {
     left: 24px;
@@ -1095,7 +1035,6 @@
     font-size: 9px;
   }
 
-  /* BOTTOM */
 
   .about-idea__bottom {
     left: 24px;
@@ -1105,10 +1044,6 @@
     bottom: 27px;
   }
 }
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .about-idea *,
