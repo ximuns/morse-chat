@@ -77,12 +77,12 @@ function IdentityMenu() {
       {isOpen && (
         <div className="identity-menu__panel">
           <div className="identity-menu__identity">
-            <span>CALLSIGN</span>
+            <span>ЛИЧНОСТЬ</span>
             <strong>{identity?.callsign}</strong>
           </div>
 
           <div className="identity-menu__identity">
-            <span>IDENTITY</span>
+            <span>КОД ВОССТАНОВЛЕНИЯ</span>
             <strong>
               {identity?.id?.slice(0, 8)}
             </strong>
@@ -103,7 +103,7 @@ function IdentityMenu() {
             onClick={handleReset}
             disabled={isLoading}
           >
-            СБРОСИТЬ IDENTITY
+            СБРОСИТЬ ЛИЧНОСТЬ
           </button>
         </div>
       )}

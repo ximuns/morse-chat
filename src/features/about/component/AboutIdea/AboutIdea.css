@@ -1119,3 +1119,849 @@
     transition: none !important;
   }
 }
+
+
+@media (max-width: 1800px) {
+  .about-idea__intro {
+    left: 4.5vw;
+  }
+
+  .about-idea__chapters {
+    right: 4.5vw;
+  }
+
+  .about-idea__bottom {
+    left: 4.5vw;
+    right: 4.5vw;
+  }
+
+  .about-idea__intro h2 {
+    font-size: clamp(60px, 8.5vw, 145px);
+  }
+
+  .about-idea__conversion {
+    width: min(980px, 80vw);
+  }
+
+  .about-idea__conversion-item {
+    height: 195px;
+  }
+
+  .about-idea__conversion-letter {
+    font-size: clamp(25px, 3.35vw, 52px);
+  }
+
+  .about-idea__morse {
+    width: min(1050px, 84vw);
+  }
+
+  .about-idea__final {
+    left: 4.5vw;
+  }
+
+  .about-idea__example {
+    right: 4.5vw;
+    width: min(520px, 36vw);
+  }
+}
+
+@media (max-width: 1600px) {
+  .about-idea__grid {
+    background-size: 80px 80px;
+  }
+
+  .about-idea__header {
+    left: 4vw;
+    right: 4vw;
+  }
+
+  .about-idea__intro {
+    left: 4vw;
+    top: 13vh;
+  }
+
+  .about-idea__intro h2 {
+    font-size: clamp(56px, 8vw, 130px);
+  }
+
+  .about-idea__intro p {
+    width: 340px;
+    font-size: 13px;
+  }
+
+  .about-idea__chapters {
+    right: 4vw;
+  }
+
+  .about-idea__conversion {
+    width: 82vw;
+  }
+
+  .about-idea__conversion-grid {
+    gap: 5px;
+    padding-top: 27px;
+  }
+
+  .about-idea__conversion-item {
+    height: 175px;
+  }
+
+  .about-idea__conversion-letter {
+    height: 58px;
+    font-size: clamp(23px, 3.1vw, 48px);
+  }
+
+  .about-idea__conversion-line {
+    height: 40px;
+  }
+
+  .about-idea__conversion-code {
+    margin-top: 13px;
+    font-size: clamp(10px, 1.15vw, 15px);
+  }
+
+  .about-idea__morse {
+    width: 87vw;
+  }
+
+  .about-idea__morse-message {
+    font-size: clamp(25px, 3.4vw, 56px);
+  }
+
+  .about-idea__morse-stream {
+    gap: 7px;
+    min-height: 95px;
+  }
+
+  .about-idea__morse-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .about-idea__morse-dash {
+    width: 27px;
+    height: 5px;
+  }
+
+  .about-idea__final {
+    left: 4vw;
+  }
+
+  .about-idea__final-line {
+    font-size: clamp(50px, 7.1vw, 120px);
+  }
+
+  .about-idea__example {
+    right: 4vw;
+    width: min(480px, 36vw);
+  }
+
+  .about-idea__example-word {
+    font-size: clamp(30px, 3.7vw, 56px);
+  }
+}
+
+@media (max-width: 1400px) {
+  .about-idea__header {
+    top: 32px;
+  }
+
+  .about-idea__intro {
+    top: 12vh;
+  }
+
+  .about-idea__intro h2 {
+    font-size: clamp(52px, 7.5vw, 112px);
+  }
+
+  .about-idea__intro p {
+    width: 310px;
+    margin-top: 24px;
+    font-size: 12px;
+  }
+
+  .about-idea__chapters {
+    top: 11vh;
+    gap: 11px;
+  }
+
+  .about-idea__conversion {
+    width: 84vw;
+  }
+
+  .about-idea__conversion-grid {
+    gap: 4px;
+    padding-top: 24px;
+  }
+
+  .about-idea__conversion-item {
+    height: 155px;
+  }
+
+  .about-idea__conversion-letter {
+    height: 50px;
+    font-size: clamp(21px, 3vw, 43px);
+  }
+
+  .about-idea__conversion-line {
+    height: 34px;
+  }
+
+  .about-idea__conversion-code {
+    margin-top: 11px;
+    font-size: 11px;
+  }
+
+  .about-idea__conversion-caption {
+    margin-top: 13px;
+    padding-top: 11px;
+    gap: 20px;
+  }
+
+  .about-idea__morse {
+    width: 89vw;
+  }
+
+  .about-idea__morse-message {
+    margin-top: 22px;
+    font-size: clamp(23px, 3.2vw, 50px);
+  }
+
+  .about-idea__morse-stream {
+    gap: 6px;
+    min-height: 85px;
+    margin-top: 24px;
+  }
+
+  .about-idea__morse-dot {
+    width: 5.5px;
+    height: 5.5px;
+  }
+
+  .about-idea__morse-dash {
+    width: 24px;
+    height: 5px;
+  }
+
+  .about-idea__morse-letter-space {
+    width: 10px;
+  }
+
+  .about-idea__morse-word-space {
+    width: 22px;
+  }
+
+  .about-idea__morse-words {
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .about-idea__morse-words > div {
+    padding: 11px 13px;
+  }
+
+  .about-idea__morse-description {
+    width: 380px;
+    margin-top: 19px;
+    font-size: 11px;
+  }
+
+  .about-idea__final {
+    bottom: 12vh;
+    left: 4vw;
+  }
+
+  .about-idea__final-line {
+    font-size: clamp(48px, 6.7vw, 100px);
+  }
+
+  .about-idea__example {
+    right: 4vw;
+    bottom: 12vh;
+    width: min(430px, 36vw);
+  }
+
+  .about-idea__example-body {
+    gap: 16px;
+    padding-top: 19px;
+  }
+
+  .about-idea__example-word {
+    font-size: clamp(28px, 3.5vw, 50px);
+  }
+
+  .about-idea__example-arrow {
+    font-size: 20px;
+  }
+
+  .about-idea__example-code {
+    font-size: 10px;
+  }
+
+  .about-idea__bottom {
+    left: 4vw;
+    right: 4vw;
+    bottom: 24px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .about-idea {
+    height: 585vh;
+  }
+
+  .about-idea__header {
+    left: 30px;
+    right: 30px;
+  }
+
+  .about-idea__intro {
+    left: 30px;
+    right: 30px;
+  }
+
+  .about-idea__intro h2 {
+    font-size: clamp(48px, 7.4vw, 88px);
+  }
+
+  .about-idea__intro p {
+    width: 280px;
+    font-size: 11px;
+  }
+
+  .about-idea__chapters {
+    right: 30px;
+  }
+
+  .about-idea__conversion {
+    width: calc(100vw - 120px);
+  }
+
+  .about-idea__conversion-item {
+    height: 140px;
+  }
+
+  .about-idea__conversion-letter {
+    height: 44px;
+    font-size: clamp(19px, 2.8vw, 38px);
+  }
+
+  .about-idea__conversion-line {
+    height: 28px;
+  }
+
+  .about-idea__conversion-code {
+    margin-top: 9px;
+    font-size: 10px;
+  }
+
+  .about-idea__conversion-caption {
+    font-size: 7px;
+  }
+
+  .about-idea__morse {
+    width: calc(100vw - 100px);
+  }
+
+  .about-idea__morse-message {
+    font-size: clamp(21px, 3vw, 42px);
+  }
+
+  .about-idea__morse-stream {
+    gap: 5px;
+    margin-top: 20px;
+  }
+
+  .about-idea__morse-dash {
+    width: 22px;
+    height: 4px;
+  }
+
+  .about-idea__morse-words > div {
+    padding: 10px 12px;
+  }
+
+  .about-idea__final {
+    left: 30px;
+  }
+
+  .about-idea__final-line {
+    font-size: clamp(45px, 6.4vw, 82px);
+  }
+
+  .about-idea__example {
+    right: 30px;
+    width: 34vw;
+  }
+
+  .about-idea__example-word {
+    font-size: clamp(26px, 3.4vw, 44px);
+  }
+
+  .about-idea__bottom {
+    left: 30px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 960px) {
+  .about-idea {
+    height: 580vh;
+  }
+
+  .about-idea__header {
+    top: 28px;
+    left: 24px;
+    right: 24px;
+
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .about-idea__intro {
+    left: 24px;
+    right: 24px;
+    top: 12vh;
+  }
+
+  .about-idea__intro h2 {
+    max-width: 540px;
+    font-size: clamp(44px, 8vw, 76px);
+  }
+
+  .about-idea__intro p {
+    width: 255px;
+    margin-top: 20px;
+  }
+
+  .about-idea__chapters {
+    right: 24px;
+    top: 11vh;
+  }
+
+  .about-idea__conversion {
+    width: calc(100vw - 70px);
+    top: 37%;
+  }
+
+  .about-idea__conversion-grid {
+    grid-template-columns: repeat(6, 1fr);
+    row-gap: 12px;
+  }
+
+  .about-idea__conversion-item {
+    height: 115px;
+  }
+
+  .about-idea__conversion-letter {
+    height: 34px;
+    font-size: 25px;
+  }
+
+  .about-idea__conversion-line {
+    height: 22px;
+  }
+
+  .about-idea__conversion-code {
+    margin-top: 7px;
+    font-size: 8px;
+  }
+
+  .about-idea__conversion-caption {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    margin-top: 10px;
+    padding-top: 9px;
+  }
+
+  .about-idea__conversion-caption span:nth-child(2),
+  .about-idea__conversion-caption span:last-child {
+    text-align: left;
+  }
+
+  .about-idea__morse {
+    width: calc(100vw - 60px);
+    top: 56%;
+  }
+
+  .about-idea__morse-message {
+    font-size: clamp(20px, 4vw, 34px);
+  }
+
+  .about-idea__morse-stream {
+    gap: 4px;
+    min-height: 75px;
+    margin-top: 17px;
+    overflow: hidden;
+  }
+
+  .about-idea__morse-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .about-idea__morse-dash {
+    width: 19px;
+    height: 4px;
+  }
+
+  .about-idea__morse-letter-space {
+    width: 8px;
+  }
+
+  .about-idea__morse-word-space {
+    width: 15px;
+  }
+
+  .about-idea__morse-words {
+    gap: 5px;
+    margin-top: 12px;
+  }
+
+  .about-idea__morse-words > div {
+    padding: 8px 10px;
+  }
+
+  .about-idea__morse-words span {
+    margin-bottom: 5px;
+    font-size: 7px;
+  }
+
+  .about-idea__morse-words strong {
+    font-size: 8px;
+  }
+
+  .about-idea__morse-description {
+    width: 270px;
+    margin-top: 12px;
+    font-size: 9px;
+  }
+
+  .about-idea__final {
+    left: 24px;
+    bottom: 13vh;
+  }
+
+  .about-idea__final-line {
+    font-size: clamp(40px, 7.2vw, 68px);
+  }
+
+  .about-idea__example {
+    right: 24px;
+    bottom: 13vh;
+    width: 40vw;
+  }
+
+  .about-idea__example-body {
+    grid-template-columns: 1fr auto 1.2fr;
+    gap: 12px;
+  }
+
+  .about-idea__example-word {
+    font-size: clamp(24px, 4vw, 38px);
+  }
+
+  .about-idea__example-arrow {
+    font-size: 17px;
+  }
+
+  .about-idea__example-code {
+    font-size: 8px;
+  }
+
+  .about-idea__bottom {
+    left: 24px;
+    right: 24px;
+    bottom: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-idea {
+    height: 575vh;
+  }
+
+  .about-idea__intro h2 {
+    font-size: clamp(42px, 9.5vw, 70px);
+  }
+
+  .about-idea__intro p {
+    width: 240px;
+  }
+
+  .about-idea__conversion {
+    width: calc(100vw - 48px);
+  }
+
+  .about-idea__conversion-grid {
+    gap: 3px;
+  }
+
+  .about-idea__morse {
+    width: calc(100vw - 42px);
+  }
+
+  .about-idea__morse-stream {
+    transform: scale(.92);
+    transform-origin: center;
+  }
+
+  .about-idea__final-line {
+    font-size: 9vw;
+  }
+
+  .about-idea__example {
+    width: 42vw;
+  }
+
+  .about-idea__example-word {
+    font-size: 4.5vw;
+  }
+
+  .about-idea__bottom {
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-idea {
+    height: 570vh;
+  }
+
+  .about-idea__header {
+    top: 27px;
+    left: 24px;
+    right: 24px;
+
+    grid-template-columns: auto auto;
+    gap: 12px;
+  }
+
+  .about-idea__header span:last-child {
+    display: none;
+  }
+
+  .about-idea__chapters {
+    top: auto;
+    right: 24px;
+    bottom: 72px;
+    gap: 9px;
+  }
+
+  .about-idea__chapters > div {
+    grid-template-columns: 20px auto;
+    gap: 7px;
+  }
+
+  .about-idea__chapters strong {
+    font-size: 8px;
+  }
+
+  .about-idea__intro {
+    left: 24px;
+    right: 24px;
+    top: 12vh;
+  }
+
+  .about-idea__intro-label {
+    font-size: 8px;
+  }
+
+  .about-idea__intro h2 {
+    font-size: 18vw;
+  }
+
+  .about-idea__intro p {
+    width: 235px;
+    margin-top: 24px;
+    font-size: 11px;
+  }
+
+  .about-idea__message {
+    width: calc(100vw - 32px);
+    top: 50%;
+  }
+
+  .about-idea__message-label {
+    margin-bottom: 20px;
+    font-size: 8px;
+  }
+
+  .about-idea__message-word {
+    font-size: 10vw;
+    letter-spacing: -0.06em;
+  }
+
+  .about-idea__message-text {
+    margin-top: 22px;
+    font-size: 9px;
+  }
+
+  .about-idea__conversion {
+    width: calc(100vw - 40px);
+    top: 48%;
+  }
+
+  .about-idea__conversion-head {
+    font-size: 7px;
+  }
+
+  .about-idea__conversion-grid {
+    grid-template-columns: repeat(6, 1fr);
+    row-gap: 14px;
+    padding-top: 20px;
+  }
+
+  .about-idea__conversion-item {
+    height: 110px;
+  }
+
+  .about-idea__conversion-letter {
+    height: 34px;
+    font-size: 23px;
+  }
+
+  .about-idea__conversion-line {
+    height: 20px;
+  }
+
+  .about-idea__conversion-code {
+    margin-top: 8px;
+    font-size: 8px;
+  }
+
+  .about-idea__conversion-caption {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    font-size: 7px;
+  }
+
+  .about-idea__conversion-caption span:nth-child(2),
+  .about-idea__conversion-caption span:last-child {
+    text-align: left;
+  }
+
+  .about-idea__morse {
+    width: calc(100vw - 32px);
+    top: 55%;
+  }
+
+  .about-idea__morse-head {
+    font-size: 7px;
+  }
+
+  .about-idea__morse-message {
+    margin-top: 18px;
+    font-size: 7.5vw;
+  }
+
+  .about-idea__morse-stream {
+    gap: 4px;
+    min-height: 80px;
+    margin-top: 18px;
+    transform: none;
+  }
+
+  .about-idea__morse-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .about-idea__morse-dash {
+    width: 18px;
+    height: 4px;
+  }
+
+  .about-idea__morse-letter-space {
+    width: 9px;
+  }
+
+  .about-idea__morse-word-space {
+    width: 16px;
+  }
+
+  .about-idea__morse-words {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .about-idea__morse-words > div {
+    padding: 9px 11px;
+  }
+
+  .about-idea__morse-words span {
+    margin-bottom: 5px;
+    font-size: 7px;
+  }
+
+  .about-idea__morse-words strong {
+    font-size: 9px;
+  }
+
+  .about-idea__morse-description {
+    width: 240px;
+    margin-top: 15px;
+    font-size: 10px;
+  }
+
+  .about-idea__final {
+    left: 24px;
+    right: 24px;
+    bottom: 14vh;
+  }
+
+  .about-idea__final-label {
+    font-size: 8px;
+  }
+
+  .about-idea__final-line {
+    font-size: 16vw;
+  }
+
+  .about-idea__final-line--muted {
+    margin-left: 7vw;
+  }
+
+  .about-idea__example {
+    left: 24px;
+    right: 24px;
+    bottom: 8vh;
+    width: auto;
+  }
+
+  .about-idea__example-head {
+    font-size: 7px;
+  }
+
+  .about-idea__example-body {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .about-idea__example-word {
+    font-size: 12vw;
+  }
+
+  .about-idea__example-arrow {
+    display: none;
+  }
+
+  .about-idea__example-code {
+    font-size: 9px;
+  }
+
+  .about-idea__bottom {
+    left: 24px;
+    right: 24px;
+    bottom: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-idea *,
+  .about-idea *::before,
+  .about-idea *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
