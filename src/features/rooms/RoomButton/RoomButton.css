@@ -87,13 +87,3 @@
 .room-button:active .room-button__content {
   transform: translateY(1px);
 }
-
-@media (max-width: 650px) {
-  .room-button__index {
-    margin-bottom: 12px;
-  }
-
-  .room-button__title {
-    font-size: 10px;
-  }
-}

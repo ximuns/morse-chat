@@ -75,9 +75,9 @@
 }
 
 .header__morse {
+  display: none;
   position: relative;
 
-  display: flex;
   align-items: center;
   justify-content: center;
 
@@ -564,9 +564,7 @@
   }
 }
 
-/* MOBILE */
-
-@media (max-width: 650px) {
+@media (max-width: 764px) {
   .header {
     padding: 25px 22px;
   }
@@ -584,6 +582,7 @@
   }
 
   .header__morse {
+    display: flex;
     transform: scale(0.9);
   }
 
@@ -600,7 +599,7 @@
   }
 
   .morse-menu__top {
-    padding: 20px 20px;
+    padding: 20px;
   }
 
   .morse-menu__content {

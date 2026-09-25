@@ -1,4 +1,3 @@
-import IdentityTest from '../../../identity/IdentityAuthTest/IdentityTest'
 import JoinRoom from '../../../rooms/JoinRoom/JoinRoom'
 import RoomButton from '../../../rooms/RoomButton/RoomButton'
 import './HomeHero.css'
@@ -23,10 +22,8 @@ function HomeHero({ onCreateRoom, onJoinRoom }) {
 
       <div className="hero__actions">
         <RoomButton onClick={onCreateRoom}>СОЗДАТЬ КОМНАТУ</RoomButton>
-
         <JoinRoom onJoin={onJoinRoom} />
       </div>
-      {/* <IdentityTest /> */}
     </section>
   )
 }
