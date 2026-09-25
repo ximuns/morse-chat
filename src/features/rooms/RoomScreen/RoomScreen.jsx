@@ -85,7 +85,7 @@ function RoomsScreen({ onBack, onEnterRoom }) {
 
         <div className="rooms-panel__content">
           <div className="rooms-panel__section">
-            <span>ACTIVE ROOMS</span>
+            <span>Комнаты</span>
 
             <strong>
               {rooms.length
