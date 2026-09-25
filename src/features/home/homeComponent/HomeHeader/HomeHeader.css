@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  z-index: 10;
+  z-index: 100;
 
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@
 
   color: rgba(255, 255, 255, 0.82);
 
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 .header__logo:hover {
@@ -31,29 +31,88 @@
 }
 
 .header__link {
+  position: relative;
+
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
   font-size: 12px;
   letter-spacing: 0.18em;
 
   color: rgba(255, 255, 255, 0.72);
 
-  transition: opacity 0.3s ease;
+  cursor: pointer;
+
+  transition:
+    opacity 0.4s ease,
+    color 0.4s ease;
+}
+
+.header__link::after {
+  content: '';
+
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+
+  width: 0;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  transition:
+    width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header__link:hover {
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.header__link:hover::after {
+  width: 100%;
 }
 
 .header__morse {
+  position: relative;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+
   gap: 5px;
 
-  height: 20px;
+  width: 34px;
+  height: 28px;
+
   padding: 0;
 
-  background: transparent;
   border: 0;
+  background: transparent;
+
   cursor: pointer;
+
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header__morse:hover {
+  transform: scale(1.08);
+}
+
+.header__morse-dot,
+.header__morse-line {
+  position: absolute;
+
+  display: block;
+
+  background: #dcded9;
+
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease,
+    width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header__morse-dot {
@@ -61,21 +120,451 @@
   height: 4px;
 
   border-radius: 50%;
-  background: #dcded9;
 }
 
 .header__morse-line {
   width: 18px;
   height: 2px;
 
-  background: #dcded9;
+  border-radius: 2px;
 }
+
+.header__morse-dot:nth-child(1) {
+  transform: translateX(-13px);
+}
+
+.header__morse-line:nth-child(2) {
+  transform: translateX(-3px);
+}
+
+.header__morse-dot:nth-child(3) {
+  transform: translateX(7px);
+}
+
+.header__morse-dot:nth-child(4) {
+  transform: translateX(-9px) translateY(9px);
+}
+
+.header__morse-line:nth-child(5) {
+  transform: translateX(2px) translateY(9px);
+}
+
+.header__morse-dot:nth-child(6) {
+  transform: translateX(12px) translateY(9px);
+}
+
+.header__morse--open .header__morse-dot:nth-child(1),
+.header__morse--open .header__morse-dot:nth-child(3),
+.header__morse--open .header__morse-dot:nth-child(4),
+.header__morse--open .header__morse-dot:nth-child(6) {
+  opacity: 0;
+  transform: translateX(0) translateY(0) scale(0.4);
+}
+
+.header__morse--open .header__morse-line:nth-child(2) {
+  width: 23px;
+  transform: translateX(0) rotate(45deg);
+}
+
+.header__morse--open .header__morse-line:nth-child(5) {
+  width: 23px;
+  transform: translateX(0) translateY(0) rotate(-45deg);
+}
+
+/* BACKDROP */
+
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 80;
+
+  background: rgba(0, 0, 0, 0.32);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* MENU */
+
+.morse-menu {
+  position: fixed;
+
+  top: 18px;
+  right: 18px;
+  left: 18px;
+
+  z-index: 90;
+
+  min-height: min(760px, calc(100vh - 36px));
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.065),
+      rgba(255, 255, 255, 0.018)
+    ),
+    rgba(7, 9, 10, 0.88);
+
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+.morse-menu__noise {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.2;
+
+  background-image:
+    radial-gradient(
+      rgba(255, 255, 255, 0.16) 0.5px,
+      transparent 0.5px
+    );
+
+  background-size: 8px 8px;
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      black,
+      transparent 80%
+    );
+}
+
+.morse-menu::before {
+  content: '';
+
+  position: absolute;
+
+  left: 8%;
+  right: 8%;
+  top: 42%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.14),
+      transparent
+    );
+
+  opacity: 0.5;
+}
+
+.morse-menu__top {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding:
+    24px
+    28px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.morse-menu__content {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: calc(min(760px, 100vh - 36px) - 100px);
+
+  padding:
+    clamp(50px, 8vh, 95px)
+    clamp(28px, 7vw, 110px)
+    40px;
+}
+
+.morse-menu__intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 8vh;
+}
+
+.morse-menu__intro > span {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.morse-menu__morse {
+  font-size: 18px;
+  letter-spacing: 0.22em;
+
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.morse-menu__nav {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 900px;
+}
+
+.morse-menu__nav button {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 50px 1fr 40px;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 22px 0;
+
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: transparent;
+
+  text-align: left;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  cursor: pointer;
+
+  transition:
+    color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    padding-left 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.morse-menu__nav button::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 0;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  transition:
+    width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.morse-menu__nav button:hover {
+  padding-left: 24px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.morse-menu__nav button:hover::before {
+  width: 100%;
+}
+
+.morse-menu__nav button span {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.morse-menu__nav button strong {
+  font-size: clamp(38px, 5vw, 78px);
+  line-height: 0.9;
+  font-weight: 300;
+  letter-spacing: -0.055em;
+}
+
+.morse-menu__nav button i {
+  font-size: 18px;
+  font-style: normal;
+
+  opacity: 0;
+
+  transform: translate(-10px, 10px);
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.morse-menu__nav button:hover i {
+  opacity: 0.8;
+
+  transform:
+    translate(0, 0);
+}
+
+/* SIGNAL */
+
+.morse-menu__signal {
+  margin-top: auto;
+
+  padding-top: 65px;
+}
+
+.morse-menu__signal-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  width: 100%;
+}
+
+.morse-menu__signal-line::before,
+.morse-menu__signal-line::after {
+  content: '';
+
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12)
+    );
+}
+
+.morse-menu__signal-line::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.12),
+      transparent
+    );
+}
+
+.morse-menu__signal-line span {
+  width: 4px;
+  height: 4px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.55);
+
+  animation:
+    menuSignal 2.6s ease-in-out infinite;
+}
+
+.morse-menu__signal-line span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.morse-menu__signal-line span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.morse-menu__signal-line span:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+.morse-menu__signal-line span:nth-child(5) {
+  animation-delay: 0.6s;
+}
+
+.morse-menu__signal-line span:nth-child(6) {
+  animation-delay: 0.75s;
+}
+
+.morse-menu__signal-line span:nth-child(7) {
+  animation-delay: 0.9s;
+}
+
+@keyframes menuSignal {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.25);
+  }
+}
+
+.morse-menu__signal-meta {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 12px;
+
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* BOTTOM */
+
+.morse-menu__bottom {
+  position: absolute;
+
+  left: 28px;
+  right: 28px;
+  bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.18);
+}
+
+/* TABLET */
 
 @media (max-width: 900px) {
   .header {
     padding: 30px;
   }
+
+  .header__nav {
+    gap: 28px;
+  }
+
+  .morse-menu {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+
+    min-height: calc(100vh - 24px);
+  }
+
+  .morse-menu__content {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 }
+
+/* MOBILE */
 
 @media (max-width: 650px) {
   .header {
@@ -83,7 +572,7 @@
   }
 
   .header__nav {
-    gap: 20px;
+    gap: 18px;
   }
 
   .header__logo {
@@ -91,10 +580,77 @@
   }
 
   .header__link {
-    font-size: 10px;
+    display: none;
   }
 
   .header__morse {
-    transform: scale(0.8);
+    transform: scale(0.9);
+  }
+
+  .header__morse:hover {
+    transform: scale(0.95);
+  }
+
+  .morse-menu {
+    top: 8px;
+    right: 8px;
+    left: 8px;
+
+    min-height: calc(100vh - 16px);
+  }
+
+  .morse-menu__top {
+    padding: 20px 20px;
+  }
+
+  .morse-menu__content {
+    min-height: calc(100vh - 90px);
+
+    padding:
+      40px
+      20px
+      30px;
+  }
+
+  .morse-menu__intro {
+    margin-bottom: 55px;
+  }
+
+  .morse-menu__morse {
+    font-size: 12px;
+  }
+
+  .morse-menu__nav button {
+    grid-template-columns: 32px 1fr 24px;
+
+    padding: 18px 0;
+  }
+
+  .morse-menu__nav button:hover {
+    padding-left: 12px;
+  }
+
+  .morse-menu__nav button strong {
+    font-size: clamp(34px, 12vw, 58px);
+  }
+
+  .morse-menu__nav button i {
+    font-size: 15px;
+  }
+
+  .morse-menu__signal {
+    padding-top: 50px;
+  }
+
+  .morse-menu__bottom {
+    left: 20px;
+    right: 20px;
+    bottom: 15px;
+
+    gap: 10px;
+  }
+
+  .morse-menu__bottom span:last-child {
+    display: none;
   }
 }
