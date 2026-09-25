@@ -3,17 +3,12 @@ import RoomCreationHeader from './components/RoomCreationHeader/RoomCreationHead
 
 import './RoomCreationScreen.css'
 
-function RoomCreationScreen({
-  onBack,
-  onCreated,
-}) {
+function RoomCreationScreen({ onBack, onCreated }) {
   return (
     <div className="room-creation">
       <RoomCreationHeader onBack={onBack} />
 
-      <RoomCreationForm
-        onCreated={onCreated}
-      />
+      <RoomCreationForm onCreated={onCreated} />
     </div>
   )
 }

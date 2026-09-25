@@ -24,9 +24,7 @@ export async function getRooms() {
 }
 
 export async function joinRoom(code) {
-  const normalizedCode = code
-    .trim()
-    .toUpperCase()
+  const normalizedCode = code.trim().toUpperCase()
 
   if (!normalizedCode) {
     throw new Error('Введите код комнаты')
@@ -43,9 +41,7 @@ export async function joinRoom(code) {
 }
 
 export async function getRoom(roomId) {
-  const result = await apiRequest(
-    `/api/rooms/${roomId}`
-  )
+  const result = await apiRequest(`/api/rooms/${roomId}`)
 
   return result
 }

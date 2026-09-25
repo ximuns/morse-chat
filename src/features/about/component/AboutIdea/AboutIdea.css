@@ -79,7 +79,6 @@
   pointer-events: none;
 }
 
-
 .about-idea__header {
   position: absolute;
 
@@ -114,7 +113,6 @@
 
   color: rgba(230, 234, 229, 0.42);
 }
-
 
 .about-idea__chapters {
   position: absolute;
@@ -159,7 +157,6 @@
 
   color: rgba(230, 234, 229, 0.86);
 }
-
 
 .about-idea__intro {
   position: absolute;
@@ -275,7 +272,6 @@
 
   color: rgba(230, 234, 229, 0.72);
 }
-
 
 .about-idea__conversion {
   position: absolute;
@@ -405,7 +401,6 @@
 .about-idea__conversion-caption span:last-child {
   text-align: right;
 }
-
 
 .about-idea__morse {
   position: absolute;
@@ -572,7 +567,6 @@
   color: rgba(230, 234, 229, 0.72);
 }
 
-
 .about-idea__final {
   position: absolute;
 
@@ -616,7 +610,6 @@
 
   color: rgba(230, 234, 229, 0.52);
 }
-
 
 .about-idea__example {
   position: absolute;
@@ -769,7 +762,6 @@
     height: 570vh;
   }
 
-
   .about-idea__header {
     top: 27px;
 
@@ -785,7 +777,6 @@
   .about-idea__header span:last-child {
     display: none;
   }
-
 
   .about-idea__chapters {
     top: auto;
@@ -831,7 +822,6 @@
     font-size: 11px;
   }
 
-
   .about-idea__message {
     width: calc(100vw - 32px);
 
@@ -855,7 +845,6 @@
 
     font-size: 9px;
   }
-
 
   .about-idea__conversion {
     width: calc(100vw - 40px);
@@ -907,7 +896,6 @@
   .about-idea__conversion-caption span:last-child {
     text-align: left;
   }
-
 
   .about-idea__morse {
     width: calc(100vw - 32px);
@@ -1035,7 +1023,6 @@
     font-size: 9px;
   }
 
-
   .about-idea__bottom {
     left: 24px;
 
@@ -1054,7 +1041,6 @@
     transition: none !important;
   }
 }
-
 
 @media (max-width: 1800px) {
   .about-idea__intro {
@@ -1636,7 +1622,7 @@
   }
 
   .about-idea__morse-stream {
-    transform: scale(.92);
+    transform: scale(0.92);
     transform-origin: center;
   }
 

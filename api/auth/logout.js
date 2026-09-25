@@ -1,34 +1,24 @@
 import { createHash } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
-    },
-  }
-)
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+  },
+})
 
 function hashValue(value) {
-  return createHash('sha256')
-    .update(value)
-    .digest('hex')
+  return createHash('sha256').update(value).digest('hex')
 }
 
 function getSessionToken(req) {
   const cookieHeader = req.headers.cookie ?? ''
 
-  const cookies = cookieHeader
-    .split(';')
-    .map((cookie) => cookie.trim())
+  const cookies = cookieHeader.split(';').map((cookie) => cookie.trim())
 
-  const sessionCookie = cookies.find(
-    (cookie) => cookie.startsWith('morse_session=')
-  )
+  const sessionCookie = cookies.find((cookie) => cookie.startsWith('morse_session='))
 
   if (!sessionCookie) {
     return null
@@ -58,8 +48,7 @@ export default async function handler(req, res) {
         .eq('token_hash', tokenHash)
     }
 
-    const isProduction =
-      process.env.NODE_ENV === 'production'
+    const isProduction = process.env.NODE_ENV === 'production'
 
     res.setHeader(
       'Set-Cookie',
@@ -72,7 +61,7 @@ export default async function handler(req, res) {
         isProduction ? 'Secure' : '',
       ]
         .filter(Boolean)
-        .join('; ')
+        .join('; '),
     )
 
     return res.status(200).json({

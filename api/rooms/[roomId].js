@@ -1,7 +1,4 @@
-import {
-  requireAuth,
-  supabase,
-} from '../_lib/auth.js'
+import { requireAuth, supabase } from '../_lib/auth.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -27,13 +24,12 @@ export default async function handler(req, res) {
       })
     }
 
-    const { data: membership, error: memberError } =
-      await supabase
-        .from('room_members')
-        .select('room_id, left_at')
-        .eq('room_id', roomId)
-        .eq('identity_id', auth.identity.id)
-        .maybeSingle()
+    const { data: membership, error: memberError } = await supabase
+      .from('room_members')
+      .select('room_id, left_at')
+      .eq('room_id', roomId)
+      .eq('identity_id', auth.identity.id)
+      .maybeSingle()
 
     if (memberError) {
       return res.status(500).json({
@@ -41,28 +37,26 @@ export default async function handler(req, res) {
       })
     }
 
-    if (
-      !membership ||
-      membership.left_at
-    ) {
+    if (!membership || membership.left_at) {
       return res.status(403).json({
         error: 'Access denied',
       })
     }
 
-    const { data: room, error: roomError } =
-      await supabase
-        .from('rooms')
-        .select(`
+    const { data: room, error: roomError } = await supabase
+      .from('rooms')
+      .select(
+        `
           id,
           code,
           owner_id,
           created_at,
           expires_at,
           deleted_at
-        `)
-        .eq('id', roomId)
-        .maybeSingle()
+        `,
+      )
+      .eq('id', roomId)
+      .maybeSingle()
 
     if (roomError) {
       return res.status(500).json({
@@ -76,19 +70,20 @@ export default async function handler(req, res) {
       })
     }
 
-    const { data: members, error: membersError } =
-      await supabase
-        .from('room_members')
-        .select(`
+    const { data: members, error: membersError } = await supabase
+      .from('room_members')
+      .select(
+        `
           identity_id,
           joined_at,
           identities (
             id,
             callsign
           )
-        `)
-        .eq('room_id', roomId)
-        .is('left_at', null)
+        `,
+      )
+      .eq('room_id', roomId)
+      .is('left_at', null)
 
     if (membersError) {
       return res.status(500).json({

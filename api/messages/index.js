@@ -1,8 +1,10 @@
 import { requireAuth, supabase } from '../_lib/auth.js'
 
 function isValidUuid(value) {
-  return typeof value === 'string' &&
+  return (
+    typeof value === 'string' &&
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
+  )
 }
 
 async function checkMembership(roomId, identityId) {
@@ -53,10 +55,7 @@ async function getMessages(req, res) {
       })
     }
 
-    const isMember = await checkMembership(
-      roomId,
-      auth.identity.id
-    )
+    const isMember = await checkMembership(roomId, auth.identity.id)
 
     if (!isMember) {
       return res.status(403).json({
@@ -66,7 +65,8 @@ async function getMessages(req, res) {
 
     const { data, error } = await supabase
       .from('messages')
-      .select(`
+      .select(
+        `
         id,
         room_id,
         sender_id,
@@ -76,7 +76,8 @@ async function getMessages(req, res) {
           id,
           callsign
         )
-      `)
+      `,
+      )
       .eq('room_id', roomId)
       .order('created_at', {
         ascending: true,
@@ -93,8 +94,7 @@ async function getMessages(req, res) {
       id: message.id,
       roomId: message.room_id,
       senderId: message.sender_id,
-      senderCallsign:
-        message.identities?.callsign ?? 'UNKNOWN',
+      senderCallsign: message.identities?.callsign ?? 'UNKNOWN',
       morse: message.morse,
       createdAt: message.created_at,
     }))
@@ -119,10 +119,7 @@ async function sendMessage(req, res) {
       })
     }
 
-    const {
-      roomId,
-      morse,
-    } = req.body ?? {}
+    const { roomId, morse } = req.body ?? {}
 
     if (!isValidUuid(roomId)) {
       return res.status(400).json({
@@ -130,10 +127,7 @@ async function sendMessage(req, res) {
       })
     }
 
-    if (
-      typeof morse !== 'string' ||
-      !morse.trim()
-    ) {
+    if (typeof morse !== 'string' || !morse.trim()) {
       return res.status(400).json({
         error: 'Invalid message',
       })
@@ -147,10 +141,7 @@ async function sendMessage(req, res) {
       })
     }
 
-    const isMember = await checkMembership(
-      roomId,
-      auth.identity.id
-    )
+    const isMember = await checkMembership(roomId, auth.identity.id)
 
     if (!isMember) {
       return res.status(403).json({
@@ -165,7 +156,8 @@ async function sendMessage(req, res) {
         sender_id: auth.identity.id,
         morse: normalizedMorse,
       })
-      .select(`
+      .select(
+        `
         id,
         room_id,
         sender_id,
@@ -175,7 +167,8 @@ async function sendMessage(req, res) {
           id,
           callsign
         )
-      `)
+      `,
+      )
       .single()
 
     if (error) {
@@ -189,8 +182,7 @@ async function sendMessage(req, res) {
         id: data.id,
         roomId: data.room_id,
         senderId: data.sender_id,
-        senderCallsign:
-          data.identities?.callsign ?? 'UNKNOWN',
+        senderCallsign: data.identities?.callsign ?? 'UNKNOWN',
         morse: data.morse,
         createdAt: data.created_at,
       },

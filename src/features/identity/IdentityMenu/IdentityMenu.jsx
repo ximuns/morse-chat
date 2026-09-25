@@ -1,22 +1,15 @@
 import { useState } from 'react'
 
-import {
-  logout,
-} from '../../../services/auth/authService'
+import { logout } from '../../../services/auth/authService'
 
-import {
-  removeIdentity,
-} from '../../../services/identity/identityService'
+import { removeIdentity } from '../../../services/identity/identityService'
 
 import { useAuth } from '../../../state/auth/AuthProvider'
 
 import './IdentityMenu.css'
 
 function IdentityMenu() {
-  const {
-    identity,
-    clearAuthentication,
-  } = useAuth()
+  const { identity, clearAuthentication } = useAuth()
 
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +31,7 @@ function IdentityMenu() {
 
   async function handleReset() {
     const confirmed = window.confirm(
-      'Удалить локальную криптографическую личность с этого устройства?'
+      'Удалить локальную криптографическую личность с этого устройства?',
     )
 
     if (!confirmed) {
@@ -67,9 +60,7 @@ function IdentityMenu() {
         type="button"
         onClick={() => setIsOpen((value) => !value)}
       >
-        <span className="identity-menu__callsign">
-          {identity?.callsign}
-        </span>
+        <span className="identity-menu__callsign">{identity?.callsign}</span>
 
         <span className="identity-menu__indicator" />
       </button>
@@ -83,9 +74,7 @@ function IdentityMenu() {
 
           <div className="identity-menu__identity">
             <span>КОД ВОССТАНОВЛЕНИЯ</span>
-            <strong>
-              {identity?.id?.slice(0, 8)}
-            </strong>
+            <strong>{identity?.id?.slice(0, 8)}</strong>
           </div>
 
           <button

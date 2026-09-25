@@ -1,7 +1,4 @@
-import {
-  requireAuth,
-  supabase,
-} from '../_lib/auth.js'
+import { requireAuth, supabase } from '../_lib/auth.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,31 +24,28 @@ export default async function handler(req, res) {
       })
     }
 
-    const normalizedCode =
-      code.trim().toUpperCase()
+    const normalizedCode = code.trim().toUpperCase()
 
-    if (
-      !normalizedCode ||
-      normalizedCode.length > 16
-    ) {
+    if (!normalizedCode || normalizedCode.length > 16) {
       return res.status(400).json({
         error: 'Invalid room code',
       })
     }
 
-    const { data: room, error: roomError } =
-      await supabase
-        .from('rooms')
-        .select(`
+    const { data: room, error: roomError } = await supabase
+      .from('rooms')
+      .select(
+        `
           id,
           code,
           owner_id,
           created_at,
           expires_at,
           deleted_at
-        `)
-        .eq('code', normalizedCode)
-        .maybeSingle()
+        `,
+      )
+      .eq('code', normalizedCode)
+      .maybeSingle()
 
     if (roomError) {
       return res.status(500).json({
@@ -65,23 +59,18 @@ export default async function handler(req, res) {
       })
     }
 
-    if (
-      room.expires_at &&
-      new Date(room.expires_at).getTime() <=
-        Date.now()
-    ) {
+    if (room.expires_at && new Date(room.expires_at).getTime() <= Date.now()) {
       return res.status(410).json({
         error: 'Room expired',
       })
     }
 
-    const { data: existingMember } =
-      await supabase
-        .from('room_members')
-        .select('room_id, left_at')
-        .eq('room_id', room.id)
-        .eq('identity_id', auth.identity.id)
-        .maybeSingle()
+    const { data: existingMember } = await supabase
+      .from('room_members')
+      .select('room_id, left_at')
+      .eq('room_id', room.id)
+      .eq('identity_id', auth.identity.id)
+      .maybeSingle()
 
     if (existingMember) {
       if (existingMember.left_at) {
@@ -101,12 +90,10 @@ export default async function handler(req, res) {
         }
       }
     } else {
-      const { error } = await supabase
-        .from('room_members')
-        .insert({
-          room_id: room.id,
-          identity_id: auth.identity.id,
-        })
+      const { error } = await supabase.from('room_members').insert({
+        room_id: room.id,
+        identity_id: auth.identity.id,
+      })
 
       if (error) {
         return res.status(500).json({

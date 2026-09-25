@@ -66,16 +66,8 @@ function JoinRoom({ onJoin }) {
   }
 
   return (
-    <div
-      className={[
-        'join-room',
-        isOpen ? 'join-room--open' : '',
-      ].join(' ')}
-    >
-      <AnimatePresence
-        mode="wait"
-        initial={false}
-      >
+    <div className={['join-room', isOpen ? 'join-room--open' : ''].join(' ')}>
+      <AnimatePresence mode="wait" initial={false}>
         {!isOpen ? (
           <motion.button
             key="trigger"
@@ -99,9 +91,7 @@ function JoinRoom({ onJoin }) {
           >
             <span>ВОЙТИ В КОМНАТУ</span>
 
-            <span className="join-room__arrow">
-              →
-            </span>
+            <span className="join-room__arrow">→</span>
           </motion.button>
         ) : (
           <motion.form
@@ -179,17 +169,11 @@ function JoinRoom({ onJoin }) {
               />
 
               <motion.button
-                className={[
-                  'join-room__submit',
-                  code
-                    ? 'join-room__submit--active'
-                    : '',
-                ].join(' ')}
+                className={['join-room__submit', code ? 'join-room__submit--active' : ''].join(' ')}
                 type="submit"
                 disabled={!code || isLoading}
                 animate={{
-                  opacity:
-                    code && !isLoading ? 1 : 0.25,
+                  opacity: code && !isLoading ? 1 : 0.25,
                   x: code ? 0 : -2,
                 }}
                 transition={{
@@ -201,11 +185,7 @@ function JoinRoom({ onJoin }) {
               </motion.button>
             </div>
 
-            {error && (
-              <div className="join-room__error">
-                {error}
-              </div>
-            )}
+            {error && <div className="join-room__error">{error}</div>}
 
             <div className="join-room__particles">
               {Array.from({

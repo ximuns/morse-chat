@@ -10,7 +10,6 @@
   color: #e7e8e4;
 }
 
-
 .about-why__number {
   margin-bottom: 100px;
 
@@ -68,7 +67,6 @@
   white-space: nowrap;
 }
 
-
 .about-why__word--large {
   font-size: clamp(110px, 16vw, 280px);
 }
@@ -82,7 +80,6 @@
 .about-why__word--offset {
   margin-left: 20vw;
 }
-
 
 .about-why__hint {
   position: absolute;
@@ -102,7 +99,6 @@
 
   pointer-events: none;
 }
-
 
 .about-why__content {
   width: 100%;
@@ -146,7 +142,6 @@
   color: rgba(231, 232, 228, 0.78);
 }
 
-
 @media (min-width: 1500px) {
   .about-why {
     padding-left: 9vw;
@@ -157,7 +152,6 @@
     font-size: 280px;
   }
 }
-
 
 @media (max-width: 900px) {
   .about-why {
@@ -194,7 +188,6 @@
     max-width: 500px;
   }
 }
-
 
 @media (max-width: 600px) {
   .about-why {

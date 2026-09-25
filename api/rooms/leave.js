@@ -1,7 +1,4 @@
-import {
-  requireAuth,
-  supabase,
-} from '../_lib/auth.js'
+import { requireAuth, supabase } from '../_lib/auth.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,19 +24,20 @@ export default async function handler(req, res) {
       })
     }
 
-    const { data: membership, error } =
-      await supabase
-        .from('room_members')
-        .select(`
+    const { data: membership, error } = await supabase
+      .from('room_members')
+      .select(
+        `
           room_id,
           identity_id,
           rooms (
             owner_id
           )
-        `)
-        .eq('room_id', roomId)
-        .eq('identity_id', auth.identity.id)
-        .maybeSingle()
+        `,
+      )
+      .eq('room_id', roomId)
+      .eq('identity_id', auth.identity.id)
+      .maybeSingle()
 
     if (error) {
       return res.status(500).json({
@@ -53,23 +51,19 @@ export default async function handler(req, res) {
       })
     }
 
-    if (
-      membership.rooms?.owner_id ===
-      auth.identity.id
-    ) {
+    if (membership.rooms?.owner_id === auth.identity.id) {
       return res.status(400).json({
         error: 'Room owner cannot leave the room',
       })
     }
 
-    const { error: updateError } =
-      await supabase
-        .from('room_members')
-        .update({
-          left_at: new Date().toISOString(),
-        })
-        .eq('room_id', roomId)
-        .eq('identity_id', auth.identity.id)
+    const { error: updateError } = await supabase
+      .from('room_members')
+      .update({
+        left_at: new Date().toISOString(),
+      })
+      .eq('room_id', roomId)
+      .eq('identity_id', auth.identity.id)
 
     if (updateError) {
       return res.status(500).json({

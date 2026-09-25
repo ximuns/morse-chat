@@ -1,21 +1,15 @@
 import { useState } from 'react'
 
-import {
-  authenticateIdentity,
-} from '../../../services/auth/authService'
+import { authenticateIdentity } from '../../../services/auth/authService'
 
-import {
-  createIdentity,
-} from '../../../services/identity/identityService'
+import { createIdentity } from '../../../services/identity/identityService'
 
 import { useAuth } from '../../../state/auth/AuthProvider'
 
 import './IdentityScreen.css'
 
 function IdentityScreen() {
-  const {
-    refreshAuth,
-  } = useAuth()
+  const { refreshAuth } = useAuth()
 
   const [callsign, setCallsign] = useState('')
   const [status, setStatus] = useState('')
@@ -50,9 +44,7 @@ function IdentityScreen() {
   return (
     <main className="identity-screen">
       <div className="identity-screen__content">
-        <div className="identity-screen__label">
-          CRYPTOGRAPHIC IDENTITY
-        </div>
+        <div className="identity-screen__label">CRYPTOGRAPHIC IDENTITY</div>
 
         <h1 className="identity-screen__title">
           СОЗДАЙТЕ
@@ -74,9 +66,7 @@ function IdentityScreen() {
             maxLength={32}
             placeholder="CALLSIGN"
             autoComplete="off"
-            onChange={(event) =>
-              setCallsign(event.target.value)
-            }
+            onChange={(event) => setCallsign(event.target.value)}
             disabled={isCreating}
           />
 
@@ -86,17 +76,11 @@ function IdentityScreen() {
             onClick={handleCreate}
             disabled={isCreating}
           >
-            {isCreating
-              ? 'СОЗДАНИЕ...'
-              : 'СОЗДАТЬ ЛИЧНОСТЬ'}
+            {isCreating ? 'СОЗДАНИЕ...' : 'СОЗДАТЬ ЛИЧНОСТЬ'}
           </button>
         </div>
 
-        {status && (
-          <div className="identity-screen__status">
-            {status}
-          </div>
-        )}
+        {status && <div className="identity-screen__status">{status}</div>}
       </div>
     </main>
   )

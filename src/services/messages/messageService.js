@@ -1,9 +1,7 @@
 import { apiRequest } from '../../lib/api/apiClient'
 
 export async function getRoomMessages(roomId) {
-  const result = await apiRequest(
-    `/api/messages?roomId=${encodeURIComponent(roomId)}`
-  )
+  const result = await apiRequest(`/api/messages?roomId=${encodeURIComponent(roomId)}`)
 
   return result.messages ?? []
 }

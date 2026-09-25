@@ -30,13 +30,11 @@ function ScatterText({ children, className = '', scatter = 260, rotation = 70, d
 
     const angle = random(0, Math.PI * 2)
 
-
     const distance = random(scatter * 0.8, scatter * 1.8)
 
     let x = Math.cos(angle) * distance
 
     let y = Math.sin(angle) * distance
-
 
     x = Math.max(-maxX, Math.min(maxX, x))
 

@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import { getCurrentSession } from '../../services/auth/authService'
 
@@ -71,9 +66,7 @@ export function useAuth() {
   const context = useContext(AuthContext)
 
   if (!context) {
-    throw new Error(
-      'useAuth must be used inside AuthProvider'
-    )
+    throw new Error('useAuth must be used inside AuthProvider')
   }
 
   return context

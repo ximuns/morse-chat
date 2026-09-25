@@ -80,7 +80,6 @@
   flex: 1;
 }
 
-
 .about-how__steps {
   display: flex;
   flex-direction: column;
@@ -177,7 +176,6 @@
   transform: scale(1);
 }
 
-
 .about-how__visual {
   position: relative;
 
@@ -215,7 +213,6 @@
   mask-image: radial-gradient(ellipse at center, black, transparent 80%);
 }
 
-
 .protocol-meta {
   position: absolute;
   top: 20px;
@@ -231,7 +228,6 @@
 
   color: rgba(231, 232, 228, 0.28);
 }
-
 
 .protocol-route {
   position: absolute;
@@ -337,7 +333,6 @@
 .route-node--active .route-node__id {
   color: rgba(231, 232, 228, 0.7);
 }
-
 
 .protocol-scene {
   position: absolute;
@@ -467,7 +462,6 @@
   bottom: 16px;
   right: 16px;
 }
-
 
 .about-how__bottom {
   display: flex;

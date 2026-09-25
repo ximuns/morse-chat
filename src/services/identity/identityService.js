@@ -1,13 +1,6 @@
-import {
-  generateKeyPair,
-  exportPublicKey,
-} from '../crypto/identityCrypto'
+import { generateKeyPair, exportPublicKey } from '../crypto/identityCrypto'
 
-import {
-  saveIdentity,
-  getIdentity,
-  deleteIdentity,
-} from '../../lib/storage/identityStorage'
+import { saveIdentity, getIdentity, deleteIdentity } from '../../lib/storage/identityStorage'
 
 import { apiRequest } from '../../lib/api/apiClient'
 
@@ -28,13 +21,9 @@ export async function createIdentity(callsign) {
     throw new Error('Identity already exists')
   }
 
-  const {
-    publicKey,
-    privateKey,
-  } = await generateKeyPair()
+  const { publicKey, privateKey } = await generateKeyPair()
 
-  const publicKeyString =
-    await exportPublicKey(publicKey)
+  const publicKeyString = await exportPublicKey(publicKey)
 
   const identityId = crypto.randomUUID()
 

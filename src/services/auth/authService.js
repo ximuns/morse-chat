@@ -11,15 +11,8 @@ export async function requestChallenge(identityId) {
   })
 }
 
-export async function verifyIdentity(
-  identity,
-  challengeId,
-  challenge
-) {
-  const signature = await signChallenge(
-    identity.privateKey,
-    challenge
-  )
+export async function verifyIdentity(identity, challengeId, challenge) {
+  const signature = await signChallenge(identity.privateKey, challenge)
 
   return apiRequest('/api/auth/verify', {
     method: 'POST',
@@ -38,16 +31,9 @@ export async function authenticateIdentity() {
     throw new Error('Identity not found')
   }
 
-  const {
-    challenge,
-    challengeId,
-  } = await requestChallenge(identity.identityId)
+  const { challenge, challengeId } = await requestChallenge(identity.identityId)
 
-  return verifyIdentity(
-    identity,
-    challengeId,
-    challenge
-  )
+  return verifyIdentity(identity, challengeId, challenge)
 }
 
 export async function getCurrentSession() {

@@ -51,9 +51,7 @@ function RoomCreationForm({ onCreated }) {
           ease: [0.16, 1, 0.3, 1],
         }}
       >
-        <div className="room-form__eyebrow">
-          СОЗДАТЬ КОМНАТУ
-        </div>
+        <div className="room-form__eyebrow">СОЗДАТЬ КОМНАТУ</div>
 
         <h1 className="room-form__title">
           НОВАЯ
@@ -80,9 +78,7 @@ function RoomCreationForm({ onCreated }) {
         }}
       >
         <label className="room-form__field">
-          <span className="room-form__label">
-            НАЗВАНИЕ КОМНАТЫ
-          </span>
+          <span className="room-form__label">НАЗВАНИЕ КОМНАТЫ</span>
 
           <input
             className="room-form__input"
@@ -99,11 +95,7 @@ function RoomCreationForm({ onCreated }) {
           />
         </label>
 
-        {error && (
-          <div className="room-form__error">
-            {error}
-          </div>
-        )}
+        {error && <div className="room-form__error">{error}</div>}
 
         <button
           className="room-form__submit"
@@ -111,11 +103,7 @@ function RoomCreationForm({ onCreated }) {
           onClick={handleCreate}
           disabled={isCreating}
         >
-          <span>
-            {isCreating
-              ? 'СОЗДАНИЕ...'
-              : 'СОЗДАТЬ КОМНАТУ'}
-          </span>
+          <span>{isCreating ? 'СОЗДАНИЕ...' : 'СОЗДАТЬ КОМНАТУ'}</span>
 
           <span>→</span>
         </button>

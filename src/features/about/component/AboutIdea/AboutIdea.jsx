@@ -246,7 +246,6 @@ function AboutIdea() {
 
   const finalY = useTransform(scrollYProgress, [0.77, 0.95], [55, 0])
 
-
   const stage1 = useTransform(scrollYProgress, [0, 0.17, 0.3], [1, 1, 0.25])
 
   const stage2 = useTransform(scrollYProgress, [0.25, 0.38, 0.55, 0.66], [0.25, 1, 1, 0.25])
@@ -258,13 +257,11 @@ function AboutIdea() {
   return (
     <section ref={sectionRef} className="about-idea">
       <div className="about-idea__sticky">
-
         <div className="about-idea__background" />
 
         <div className="about-idea__grid" />
 
         <div className="about-idea__glow" />
-
 
         <header className="about-idea__header">
           <span>02</span>
@@ -348,7 +345,6 @@ function AboutIdea() {
           <div className="about-idea__message-text">Сначала это просто фраза.</div>
         </motion.div>
 
-
         <motion.div
           className="about-idea__conversion"
           style={{
@@ -382,7 +378,6 @@ function AboutIdea() {
             <span>СМЫСЛ НЕ МЕНЯЕТСЯ</span>
           </div>
         </motion.div>
-
 
         <motion.div
           className="about-idea__morse"

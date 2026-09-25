@@ -25,28 +25,16 @@ function HomeHeader({ onAbout, onRooms }) {
   return (
     <>
       <header className="header">
-        <a
-          href="/"
-          className="header__logo"
-          onClick={closeMenu}
-        >
+        <a href="/" className="header__logo" onClick={closeMenu}>
           MORSE.CHAT
         </a>
 
         <nav className="header__nav">
-          <button
-            type="button"
-            className="header__link"
-            onClick={handleAbout}
-          >
+          <button type="button" className="header__link" onClick={handleAbout}>
             О НАС
           </button>
 
-          <button
-            type="button"
-            className="header__link"
-            onClick={handleRooms}
-          >
+          <button type="button" className="header__link" onClick={handleRooms}>
             КОМНАТЫ
           </button>
 
@@ -54,9 +42,7 @@ function HomeHeader({ onAbout, onRooms }) {
 
           <button
             type="button"
-            className={`header__morse ${
-              menuOpen ? 'header__morse--open' : ''
-            }`}
+            className={`header__morse ${menuOpen ? 'header__morse--open' : ''}`}
             aria-label="Открыть меню"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((value) => !value)}
@@ -90,20 +76,17 @@ function HomeHeader({ onAbout, onRooms }) {
               className="morse-menu"
               initial={{
                 opacity: 0,
-                clipPath:
-                  'polygon(100% 0, 100% 0, 100% 0, 100% 0)',
+                clipPath: 'polygon(100% 0, 100% 0, 100% 0, 100% 0)',
                 transform: 'translateY(-20px)',
               }}
               animate={{
                 opacity: 1,
-                clipPath:
-                  'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                 transform: 'translateY(0)',
               }}
               exit={{
                 opacity: 0,
-                clipPath:
-                  'polygon(100% 0, 100% 0, 100% 0, 100% 0)',
+                clipPath: 'polygon(100% 0, 100% 0, 100% 0, 100% 0)',
                 transform: 'translateY(-20px)',
               }}
               transition={{
@@ -116,34 +99,24 @@ function HomeHeader({ onAbout, onRooms }) {
               <div className="morse-menu__top">
                 <span>НАВИГАЦИЯ</span>
 
-                <span>
-                  SIGNAL / 001
-                </span>
+                <span>SIGNAL / 001</span>
               </div>
 
               <div className="morse-menu__content">
                 <div className="morse-menu__intro">
                   <span>МОЁ ПРОСТРАНСТВО</span>
 
-                  <div className="morse-menu__morse">
-                    · − · · &nbsp;&nbsp; − − −
-                  </div>
+                  <div className="morse-menu__morse">· − · · &nbsp;&nbsp; − − −</div>
                 </div>
 
                 <nav className="morse-menu__nav">
-                  <button
-                    type="button"
-                    onClick={handleAbout}
-                  >
+                  <button type="button" onClick={handleAbout}>
                     <span>01</span>
                     <strong>О НАС</strong>
                     <i>↗</i>
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={handleRooms}
-                  >
+                  <button type="button" onClick={handleRooms}>
                     <span>02</span>
                     <strong>КОМНАТЫ</strong>
                     <i>↗</i>
