@@ -1,846 +1,1447 @@
-import { useEffect, useRef, useState } from 'react'
+import {
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
-import { AnimatePresence, motion } from 'motion/react'
+import {
+    AnimatePresence,
+    motion,
+} from 'motion/react'
 
-import { getRoomMessages, sendMessage } from '../../../services/messages/messageService'
+import {
+    getRoomMessages,
+    sendMessage,
+} from '../../../services/messages/messageService'
 
-import { subscribeToRoom } from '../../../services/realtime/realtimeService'
+import {
+    subscribeToRoom,
+} from '../../../services/realtime/realtimeService'
 
-import { decodeMorse } from '../../../utils/morse'
-import { useAuth } from '../../../state/auth/AuthProvider'
+import {
+    decodeMorse,
+} from '../../../utils/morse'
+
+import {
+    useAuth,
+} from '../../../state/auth/AuthProvider'
 
 import './ChatScreen.css'
 
 const HOLD_THRESHOLD = 260
-const LETTER_GAP = 1200
-const WORD_GAP = 2400
+const LETTER_GAP = 700
+const WORD_GAP = 900
 
 function decodeMessage(morse) {
-  if (!morse.trim()) {
-    return ''
-  }
+    if (!morse.trim()) {
+        return ''
+    }
 
-  return morse
-    .split(' / ')
-    .map((word) => word.split(' ').filter(Boolean).map(decodeMorse).join(''))
-    .join(' ')
-}
-
-function MorseVisual({ value, trailingBoundary = null, className = '' }) {
-  const words = value.split(' / ').filter(Boolean)
-
-  return (
-    <span className={`morse-visual ${className}`}>
-      {words.map((word, wordIndex) => {
-        const letters = word.split(' ').filter(Boolean)
-
-        return (
-          <span className="morse-visual__word" key={wordIndex}>
-            {letters.map((letter, letterIndex) => (
-              <span className="morse-visual__letter" key={letterIndex}>
-                {letter
-                  .split('')
-                  .map((symbol, symbolIndex) =>
-                    symbol === '.' ? (
-                      <span className="morse-visual__dot" key={symbolIndex} />
-                    ) : (
-                      <span className="morse-visual__dash" key={symbolIndex} />
-                    ),
-                  )}
-
-                {letterIndex < letters.length - 1 && (
-                  <span className="morse-visual__letter-gap">
-                    <i />
-                  </span>
-                )}
-              </span>
-            ))}
-
-            {wordIndex < words.length - 1 && (
-              <span className="morse-visual__word-gap">
-                <i />
-              </span>
-            )}
-          </span>
+    return morse
+        .split(' / ')
+        .map((word) =>
+            word
+                .split(' ')
+                .filter(Boolean)
+                .map(decodeMorse)
+                .join('')
         )
-      })}
-
-      {trailingBoundary === 'letter' && (
-        <span className="morse-visual__letter-gap morse-visual__letter-gap--trailing">
-          <i />
-        </span>
-      )}
-
-      {trailingBoundary === 'word' && (
-        <span className="morse-visual__word-gap morse-visual__word-gap--trailing">
-          <i />
-        </span>
-      )}
-    </span>
-  )
+        .join(' ')
 }
 
-function ChatScreen({ room, onBack }) {
-  const { identity } = useAuth()
-
-  const [committedMorse, setCommittedMorse] = useState('')
-
-  const [currentCode, setCurrentCode] = useState('')
-
-  const [mode, setMode] = useState('auto')
-
-  const [gapStage, setGapStage] = useState('none')
-
-  const [elapsed, setElapsed] = useState(0)
-
-  const [isPressed, setIsPressed] = useState(false)
-
-  const [liveSymbol, setLiveSymbol] = useState('')
-
-  const [expandedMessages, setExpandedMessages] = useState(new Set())
-
-  const [messages, setMessages] = useState([])
-
-  const [isLoadingMessages, setIsLoadingMessages] = useState(true)
-
-  const [isSending, setIsSending] = useState(false)
-
-  const [error, setError] = useState('')
-
-  const currentCodeRef = useRef('')
-
-  const gapStageRef = useRef('none')
-
-  const modeRef = useRef('auto')
-
-  const animationFrameRef = useRef(null)
-
-  const gapStartedAtRef = useRef(0)
-
-  const pressStartedAt = useRef(0)
-
-  const holdTimer = useRef(null)
-
-  const messagesEndRef = useRef(null)
-
-  const realtimeCleanupRef = useRef(null)
-
-  const displayMorse = committedMorse + currentCode
-
-  const decodedText = decodeMessage(displayMorse)
-
-  const progress = Math.min(100, (elapsed / WORD_GAP) * 100)
-
-  const letterReached = elapsed >= LETTER_GAP
-
-  const wordReached = elapsed >= WORD_GAP
-
-  const trailingBoundary =
-    mode === 'auto'
-      ? gapStage === 'letter'
-        ? 'letter'
-        : gapStage === 'word'
-          ? 'word'
-          : null
-      : null
-
-  function clearAnimation() {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current)
-
-      animationFrameRef.current = null
-    }
-  }
-
-  function clearHoldTimer() {
-    if (holdTimer.current) {
-      clearTimeout(holdTimer.current)
-
-      holdTimer.current = null
-    }
-  }
-
-  function finalizeLetter() {
-    const code = currentCodeRef.current
-
-    if (!code) {
-      return
-    }
-
-    setCommittedMorse((value) => (value ? `${value} ${code}` : code))
-
-    setCurrentCode('')
-    currentCodeRef.current = ''
-
-    setGapStage('letter')
-    gapStageRef.current = 'letter'
-  }
-
-  function startGapTimer() {
-    clearAnimation()
-
-    if (modeRef.current !== 'auto') {
-      return
-    }
-
-    gapStartedAtRef.current = performance.now()
-
-    setElapsed(0)
-    setGapStage('waiting')
-    gapStageRef.current = 'waiting'
-
-    function tick(now) {
-      const elapsedNow = now - gapStartedAtRef.current
-
-      if (elapsedNow >= WORD_GAP) {
-        setElapsed(WORD_GAP)
-        setGapStage('word')
-        gapStageRef.current = 'word'
-
-        clearAnimation()
-        return
-      }
-
-      if (elapsedNow >= LETTER_GAP && gapStageRef.current === 'waiting') {
-        finalizeLetter()
-      }
-
-      setElapsed(elapsedNow)
-
-      animationFrameRef.current = requestAnimationFrame(tick)
-    }
-
-    animationFrameRef.current = requestAnimationFrame(tick)
-  }
-
-  function handleSignal(symbol) {
-    clearAnimation()
-
-    if (modeRef.current === 'auto') {
-      if (gapStageRef.current === 'letter') {
-        setCommittedMorse((value) => (value ? `${value} ` : value))
-      }
-
-      if (gapStageRef.current === 'word') {
-        setCommittedMorse((value) => (value ? `${value} / ` : value))
-      }
-    }
-
-    setGapStage('none')
-    gapStageRef.current = 'none'
-
-    setElapsed(0)
-
-    setCurrentCode((value) => `${value}${symbol}`)
-
-    currentCodeRef.current += symbol
-
-    setLiveSymbol(symbol)
-
-    startGapTimer()
-  }
-
-  function handlePointerDown(event) {
-    event.currentTarget.setPointerCapture(event.pointerId)
-
-    clearHoldTimer()
-
-    pressStartedAt.current = performance.now()
-
-    setIsPressed(true)
-    setLiveSymbol('.')
-
-    holdTimer.current = setTimeout(() => {
-      setLiveSymbol('-')
-    }, HOLD_THRESHOLD)
-  }
-
-  function handlePointerUp(event) {
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
-    }
-
-    clearHoldTimer()
-
-    const duration = performance.now() - pressStartedAt.current
-
-    const symbol = duration >= HOLD_THRESHOLD ? '-' : '.'
-
-    setIsPressed(false)
-
-    handleSignal(symbol)
-  }
-
-  function handlePointerCancel() {
-    clearHoldTimer()
-    setIsPressed(false)
-    setLiveSymbol('')
-  }
-
-  function handleManualLetter() {
-    const code = currentCodeRef.current
-
-    if (!code) {
-      return
-    }
-
-    setCommittedMorse((value) => (value ? `${value} ${code}` : code))
-
-    setCurrentCode('')
-    currentCodeRef.current = ''
-
-    setGapStage('none')
-    gapStageRef.current = 'none'
-
-    setElapsed(0)
-  }
-
-  function handleManualWord() {
-    const code = currentCodeRef.current
-
-    if (code) {
-      setCommittedMorse((value) => (value ? `${value} ${code} / ` : `${code} / `))
-
-      setCurrentCode('')
-      currentCodeRef.current = ''
-    }
-
-    setGapStage('none')
-    gapStageRef.current = 'none'
-
-    setElapsed(0)
-  }
-
-  function toggleMode() {
-    clearAnimation()
-
-    const nextMode = modeRef.current === 'auto' ? 'manual' : 'auto'
-
-    modeRef.current = nextMode
-
-    setMode(nextMode)
-    setGapStage('none')
-    gapStageRef.current = 'none'
-    setElapsed(0)
-  }
-
-  function toggleMessage(messageId) {
-    setExpandedMessages((current) => {
-      const next = new Set(current)
-
-      if (next.has(messageId)) {
-        next.delete(messageId)
-      } else {
-        next.add(messageId)
-      }
-
-      return next
-    })
-  }
-
-  function handleDeleteLast() {
-    clearAnimation()
-    clearHoldTimer()
-
-    setLiveSymbol('')
-    setElapsed(0)
-
-    const current = currentCodeRef.current
-
-    if (current) {
-      const next = current.slice(0, -1)
-
-      currentCodeRef.current = next
-      setCurrentCode(next)
-
-      setGapStage('none')
-      gapStageRef.current = 'none'
-
-      return
-    }
-
-    const value = committedMorse.trim()
-
-    if (!value) {
-      return
-    }
-
-    let next = value
-
-    if (next.endsWith('/')) {
-      next = next.slice(0, -1).trim()
-    } else {
-      next = next.replace(/\s+\S+$/, '').trim()
-
-      if (next.endsWith('/')) {
-        next = next.slice(0, -1).trim()
-      }
-    }
-
-    setCommittedMorse(next)
-
-    setGapStage('none')
-    gapStageRef.current = 'none'
-    setElapsed(0)
-  }
-
-  async function handleSend() {
-    const finalMorse = (committedMorse + currentCode)
-      .replace(/\s+/g, ' ')
-      .replace(/\s*\/\s*/g, ' / ')
-      .trim()
-
-    if (!finalMorse || !room?.id || isSending) {
-      return
-    }
-
-    try {
-      setIsSending(true)
-      setError('')
-
-      const message = await sendMessage(room.id, finalMorse)
-
-      if (message) {
-        setMessages((value) => {
-          const exists = value.some((item) => item.id === message.id)
-
-          if (exists) {
-            return value
-          }
-
-          return [...value, message]
-        })
-      }
-
-      setCommittedMorse('')
-      setCurrentCode('')
-      currentCodeRef.current = ''
-
-      setGapStage('none')
-      gapStageRef.current = 'none'
-
-      setElapsed(0)
-
-      clearAnimation()
-    } catch (error) {
-      setError(error.message)
-    } finally {
-      setIsSending(false)
-    }
-  }
-
-  useEffect(() => {
-    modeRef.current = mode
-  }, [mode])
-
-  useEffect(() => {
-    if (!room?.id) {
-      setMessages([])
-      setIsLoadingMessages(false)
-      return
-    }
-
-    let cancelled = false
-
-    async function loadMessages() {
-      try {
-        setIsLoadingMessages(true)
-        setError('')
-
-        const result = await getRoomMessages(room.id)
-
-        if (!cancelled) {
-          setMessages(result)
-        }
-      } catch (error) {
-        if (!cancelled) {
-          setError(error.message)
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoadingMessages(false)
-        }
-      }
-    }
-
-    loadMessages()
-
-    return () => {
-      cancelled = true
-    }
-  }, [room?.id])
-
-  useEffect(() => {
-    if (!room?.id) {
-      return
-    }
-
-    let cancelled = false
-
-    async function connectRealtime() {
-      try {
-        const cleanup = await subscribeToRoom(room.id, (message) => {
-          if (cancelled) {
-            return
-          }
-
-          setMessages((current) => {
-            const exists = current.some((item) => item.id === message.id)
-
-            if (exists) {
-              return current
-            }
-
-            return [...current, message]
-          })
-        })
-
-        if (cancelled) {
-          await cleanup()
-          return
-        }
-
-        realtimeCleanupRef.current = cleanup
-      } catch (error) {
-        if (!cancelled) {
-          setError(`Realtime: ${error.message}`)
-        }
-      }
-    }
-
-    connectRealtime()
-
-    return () => {
-      cancelled = true
-
-      if (realtimeCleanupRef.current) {
-        realtimeCleanupRef.current()
-        realtimeCleanupRef.current = null
-      }
-    }
-  }, [room?.id])
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    })
-  }, [messages.length])
-
-  useEffect(() => {
-    return () => {
-      clearAnimation()
-      clearHoldTimer()
-
-      if (realtimeCleanupRef.current) {
-        realtimeCleanupRef.current()
-        realtimeCleanupRef.current = null
-      }
-    }
-  }, [])
-
-  return (
-    <main className="chat-screen">
-      <div className="chat-screen__ambient" />
-
-      <section className="chat">
-        <header className="chat__header">
-          <div className="chat__inner">
-            <div className="chat__room">
-              <span className="chat__eyebrow">МОРЗЕ / КОМНАТА</span>
-
-              <h1 className="chat__title">{room?.name || 'КОМНАТА'}</h1>
-
-              <span className="chat__room-id">КОД // {room?.code || '------'}</span>
-            </div>
-
-            <button
-              type="button"
-              className="chat__close"
-              onClick={onBack}
-              aria-label="Выйти из комнаты"
-            >
-              <span />
-              <span />
-            </button>
-          </div>
-        </header>
-
-        <div className="chat__messages">
-          <div className="chat__inner chat__messages-inner">
-            {isLoadingMessages && (
-              <div className="rooms-empty">
-                <h2>ЗАГРУЗКА</h2>
-
-                <p>СИНХРОНИЗАЦИЯ СООБЩЕНИЙ...</p>
-              </div>
-            )}
-
-            {!isLoadingMessages && !messages.length && (
-              <div className="rooms-empty">
-                <h2>ПОКА ПУСТО</h2>
-
-                <p>Передайте первый сигнал.</p>
-              </div>
-            )}
-
-            {messages.map((message) => {
-              const isOwn = message.senderId === identity?.id
-
-              const isExpanded = expandedMessages.has(message.id)
-
-              return (
-                <motion.article
-                  className={`message ${isOwn ? 'message--outgoing' : 'message--incoming'} ${
-                    isExpanded ? 'message--expanded' : ''
-                  }`}
-                  key={message.id}
-                  layout
-                  onClick={() => toggleMessage(message.id)}
-                  transition={{
-                    layout: {
-                      duration: 0.28,
-                      ease: [0.22, 1, 0.36, 1],
-                    },
-                  }}
-                >
-                  <div className="message__top">
-                    <span>{isOwn ? 'ИСХОДЯЩЕЕ' : 'ВХОДЯЩЕЕ'}</span>
-
-                    <span>{isExpanded ? 'СКРЫТЬ' : 'ПЕРЕВЕСТИ'}</span>
-                  </div>
-
-                  <MorseVisual value={message.morse} className="message__morse" />
-
-                  <AnimatePresence initial={false}>
-                    {isExpanded && (
-                      <motion.div
-                        className="message__translated"
-                        initial={{
-                          opacity: 0,
-                          height: 0,
-                          marginTop: 0,
-                          y: -5,
-                        }}
-                        animate={{
-                          opacity: 0.68,
-                          height: 'auto',
-                          marginTop: 14,
-                          y: 0,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          height: 0,
-                          marginTop: 0,
-                          y: -5,
-                        }}
-                        transition={{
-                          duration: 0.24,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                      >
-                        {decodeMessage(message.morse)}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <span className="message__hint">
-                    {isExpanded ? 'НАЖМИТЕ, ЧТОБЫ СКРЫТЬ' : 'НАЖМИТЕ, ЧТОБЫ ПЕРЕВЕСТИ'}
-                  </span>
-                </motion.article>
-              )
+function MorseVisual({
+    value,
+    trailingBoundary = null,
+    className = '',
+}) {
+    const words = value
+        .split(' / ')
+        .filter(Boolean)
+
+    return (
+        <span className={`morse-visual ${className}`}>
+            {words.map((word, wordIndex) => {
+                const letters = word
+                    .split(' ')
+                    .filter(Boolean)
+
+                return (
+                    <span
+                        className="morse-visual__word"
+                        key={wordIndex}
+                    >
+                        {letters.map((letter, letterIndex) => (
+                            <span
+                                className="morse-visual__letter"
+                                key={letterIndex}
+                            >
+                                {letter.split('').map(
+                                    (symbol, symbolIndex) =>
+                                        symbol === '.' ? (
+                                            <span
+                                                className="morse-visual__dot"
+                                                key={symbolIndex}
+                                            />
+                                        ) : (
+                                            <span
+                                                className="morse-visual__dash"
+                                                key={symbolIndex}
+                                            />
+                                        )
+                                )}
+
+                                {letterIndex < letters.length - 1 && (
+                                    <span className="morse-visual__letter-gap">
+                                        <i />
+                                    </span>
+                                )}
+                            </span>
+                        ))}
+
+                        {wordIndex < words.length - 1 && (
+                            <span className="morse-visual__word-gap">
+                                <i />
+                            </span>
+                        )}
+                    </span>
+                )
             })}
 
-            <div ref={messagesEndRef} />
-          </div>
-        </div>
-
-        <section className="chat__composer">
-          <div className="chat__inner">
-            <div className="chat__composer-header">
-              <div className="chat__composer-title">
-                <span>СООБЩЕНИЕ</span>
-
-                <small>{mode === 'auto' ? 'АВТОМАТИЧЕСКИЕ ПАУЗЫ' : 'РУЧНЫЕ ПАУЗЫ'}</small>
-              </div>
-
-              <button
-                type="button"
-                className={`mode-toggle ${mode === 'manual' ? 'mode-toggle--manual' : ''}`}
-                onClick={toggleMode}
-              >
-                <span className={mode === 'auto' ? 'is-active' : ''}>АВТО</span>
-
-                <i />
-
-                <span className={mode === 'manual' ? 'is-active' : ''}>ВРУЧНУЮ</span>
-              </button>
-            </div>
-
-            <div className="chat__draft">
-              <div className="chat__draft-text">{decodedText || 'Передайте сигнал ...'}</div>
-
-              <div className="chat__draft-morse">
-                {displayMorse ? (
-                  <MorseVisual value={displayMorse} trailingBoundary={trailingBoundary} />
-                ) : (
-                  <span className="chat__draft-empty">• • •</span>
-                )}
-              </div>
-            </div>
-
-            {error && <div className="chat__error">{error}</div>}
-
-            {mode === 'auto' && (
-              <div
-                className={`spacing-timeline ${
-                  gapStage === 'waiting' ? 'spacing-timeline--active' : ''
-                }`}
-              >
-                <div className="spacing-timeline__head">
-                  <span>
-                    {gapStage === 'waiting'
-                      ? 'ПАУЗА МЕЖДУ СИГНАЛАМИ'
-                      : gapStage === 'letter'
-                        ? 'БУКВА ЗАВЕРШЕНА'
-                        : gapStage === 'word'
-                          ? 'СЛОВО ЗАВЕРШЕНО'
-                          : 'АВТОМАТИЧЕСКОЕ РАЗДЕЛЕНИЕ'}
-                  </span>
-
-                  <strong>
-                    {gapStage === 'waiting'
-                      ? `${Math.ceil(Math.max(0, WORD_GAP - elapsed))} мс`
-                      : gapStage === 'letter'
-                        ? `${LETTER_GAP} мс`
-                        : gapStage === 'word'
-                          ? `${WORD_GAP} мс`
-                          : 'ГОТОВ'}
-                  </strong>
-                </div>
-
-                <div className="spacing-timeline__track">
-                  <div
-                    className="spacing-timeline__fill"
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                  />
-
-                  <div
-                    className="spacing-timeline__cursor"
-                    style={{
-                      left: `${progress}%`,
-                    }}
-                  />
-
-                  <div
-                    className={`spacing-timeline__point spacing-timeline__point--letter ${
-                      letterReached ? 'is-active' : ''
-                    }`}
-                  >
-                    <span />
-                  </div>
-
-                  <div
-                    className={`spacing-timeline__point spacing-timeline__point--word ${
-                      wordReached ? 'is-active' : ''
-                    }`}
-                  >
-                    <span />
-                  </div>
-                </div>
-
-                <div className="spacing-timeline__labels">
-                  <div>
-                    <span>0</span>
-
-                    <strong>СИГНАЛ</strong>
-                  </div>
-
-                  <div>
-                    <span>{LETTER_GAP} мс</span>
-
-                    <strong>БУКВА</strong>
-                  </div>
-
-                  <div>
-                    <span>{WORD_GAP} мс</span>
-
-                    <strong>СЛОВО</strong>
-                  </div>
-                </div>
-              </div>
+            {trailingBoundary === 'letter' && (
+                <span className="morse-visual__letter-gap morse-visual__letter-gap--trailing">
+                    <i />
+                </span>
             )}
 
-            {mode === 'manual' && (
-              <div className="manual-spacing">
-                <button type="button" onClick={handleManualLetter}>
-                  <strong>БУКВА</strong>
-
-                  <span>отделить</span>
-                </button>
-
-                <button type="button" onClick={handleManualWord}>
-                  <strong>СЛОВО</strong>
-
-                  <span>отделить</span>
-                </button>
-              </div>
+            {trailingBoundary === 'word' && (
+                <span className="morse-visual__word-gap morse-visual__word-gap--trailing">
+                    <i />
+                </span>
             )}
+        </span>
+    )
+}
 
-            <button
-              type="button"
-              className={`morse-key ${isPressed ? 'morse-key--active' : ''}`}
-              onPointerDown={handlePointerDown}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerCancel}
-              onContextMenu={(event) => event.preventDefault()}
-            >
-              <span className="morse-key__symbol">
-                {isPressed ? (liveSymbol === '-' ? '—' : '·') : '·'}
-              </span>
+function ChatScreen({
+    room,
+    onBack,
+}) {
+    const { identity } = useAuth()
 
-              <span className="morse-key__state">
-                {isPressed ? (liveSymbol === '-' ? 'ТИРЕ' : 'ТОЧКА') : 'НАЖМИТЕ И ДЕРЖИТЕ'}
-              </span>
-            </button>
+    const [committedMorse, setCommittedMorse] =
+        useState('')
 
-            <div className="chat__composer-actions">
-              <button
-                type="button"
-                className="chat__delete"
-                onClick={handleDeleteLast}
-                disabled={!displayMorse.trim() || isSending}
-              >
-                <span>УДАЛИТЬ</span>
-                <strong>⌫</strong>
-              </button>
+    const [currentCode, setCurrentCode] =
+        useState('')
 
-              <button
-                type="button"
-                className="chat__send"
-                onClick={handleSend}
-                disabled={isSending || !displayMorse.trim()}
-              >
-                <span>{isSending ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ'}</span>
+    const [mode, setMode] =
+        useState('auto')
 
-                <strong>→</strong>
-              </button>
-            </div>
-          </div>
-        </section>
+    const [gapStage, setGapStage] =
+        useState('none')
 
-        <footer className="chat__footer">
-          <div className="chat__inner">
-            <span>{isPressed ? 'ПЕРЕДАЧА' : 'ГОТОВ'}</span>
+    const [elapsed, setElapsed] =
+        useState(0)
 
-            <span>РУ / МОРЗЕ</span>
-          </div>
-        </footer>
-      </section>
-    </main>
-  )
+    const [isPressed, setIsPressed] =
+        useState(false)
+
+    const [liveSymbol, setLiveSymbol] =
+        useState('')
+
+    const [expandedMessages, setExpandedMessages] =
+        useState(new Set())
+
+    const [messages, setMessages] =
+        useState([])
+
+    const [isLoadingMessages, setIsLoadingMessages] =
+        useState(true)
+
+    const [isSending, setIsSending] =
+        useState(false)
+
+    const [error, setError] =
+        useState('')
+
+    const currentCodeRef =
+        useRef('')
+
+    const gapStageRef =
+        useRef('none')
+
+    const modeRef =
+        useRef('auto')
+
+    const animationFrameRef =
+        useRef(null)
+
+    const gapStartedAtRef =
+        useRef(0)
+
+    const pressStartedAt =
+        useRef(0)
+
+    const holdTimer =
+        useRef(null)
+
+    const messagesEndRef =
+        useRef(null)
+
+    const realtimeCleanupRef =
+        useRef(null)
+
+    const displayMorse =
+        committedMorse +
+        currentCode
+
+    const decodedText =
+        decodeMessage(displayMorse)
+
+    const progress =
+        Math.min(
+            100,
+            (elapsed / WORD_GAP) * 100
+        )
+
+    const letterReached =
+        elapsed >= LETTER_GAP
+
+    const wordReached =
+        elapsed >= WORD_GAP
+
+    const trailingBoundary =
+        committedMorse.endsWith(' / ')
+            ? 'word'
+            : committedMorse.endsWith(' ')
+                ? 'letter'
+                : null
+
+    function clearAnimation() {
+        if (
+            animationFrameRef.current
+        ) {
+            cancelAnimationFrame(
+                animationFrameRef.current
+            )
+
+            animationFrameRef.current =
+                null
+        }
+    }
+
+    function clearHoldTimer() {
+        if (holdTimer.current) {
+            clearTimeout(
+                holdTimer.current
+            )
+
+            holdTimer.current = null
+        }
+    }
+
+    function finalizeLetter() {
+        const code =
+            currentCodeRef.current
+
+        if (!code) {
+            return
+        }
+
+        setCommittedMorse(
+            (value) => {
+                const normalized =
+                    value.endsWith(' / ')
+                        ? value
+                        : value.endsWith(' ')
+                            ? value
+                            : value
+
+                return `${normalized}${code} `
+            }
+        )
+
+        setCurrentCode('')
+        currentCodeRef.current = ''
+
+        setGapStage('letter')
+        gapStageRef.current = 'letter'
+    }
+
+    function convertLetterGapToWordGap() {
+        setCommittedMorse(
+            (value) => {
+                const trimmed =
+                    value.trimEnd()
+
+                if (!trimmed) {
+                    return value
+                }
+
+                if (trimmed.endsWith('/')) {
+                    return `${trimmed} `
+                }
+
+                return `${trimmed} / `
+            }
+        )
+
+        setGapStage('word')
+        gapStageRef.current = 'word'
+    }
+
+    function startGapTimer() {
+        clearAnimation()
+
+        if (
+            modeRef.current !== 'auto'
+        ) {
+            return
+        }
+
+        gapStartedAtRef.current =
+            performance.now()
+
+        setElapsed(0)
+        setGapStage('waiting')
+
+        gapStageRef.current =
+            'waiting'
+
+        function tick(now) {
+            const elapsedNow =
+                now -
+                gapStartedAtRef.current
+
+            if (
+                elapsedNow >= WORD_GAP
+            ) {
+                setElapsed(WORD_GAP)
+
+                convertLetterGapToWordGap()
+
+                clearAnimation()
+
+                return
+            }
+
+            if (
+                elapsedNow >= LETTER_GAP &&
+                gapStageRef.current ===
+                    'waiting'
+            ) {
+                finalizeLetter()
+            }
+
+            setElapsed(elapsedNow)
+
+            animationFrameRef.current =
+                requestAnimationFrame(
+                    tick
+                )
+        }
+
+        animationFrameRef.current =
+            requestAnimationFrame(tick)
+    }
+
+    function handleSignal(symbol) {
+        clearAnimation()
+
+        const stage =
+            gapStageRef.current
+
+        if (
+            modeRef.current === 'auto'
+        ) {
+            if (
+                stage === 'letter'
+            ) {
+                setCommittedMorse(
+                    (value) =>
+                        value.endsWith(' ')
+                            ? value
+                            : `${value} `
+                )
+            }
+
+            if (
+                stage === 'word'
+            ) {
+                setCommittedMorse(
+                    (value) => {
+                        const trimmed =
+                            value.trimEnd()
+
+                        return trimmed.endsWith(
+                            '/'
+                        )
+                            ? `${trimmed} `
+                            : `${trimmed} / `
+                    }
+                )
+            }
+        }
+
+        setGapStage('none')
+        gapStageRef.current = 'none'
+
+        setElapsed(0)
+
+        setCurrentCode(
+            (value) =>
+                `${value}${symbol}`
+        )
+
+        currentCodeRef.current +=
+            symbol
+
+        setLiveSymbol(symbol)
+
+        startGapTimer()
+    }
+
+    function handlePointerDown(event) {
+        event.currentTarget.setPointerCapture(
+            event.pointerId
+        )
+
+        clearHoldTimer()
+
+        pressStartedAt.current =
+            performance.now()
+
+        setIsPressed(true)
+        setLiveSymbol('.')
+
+        holdTimer.current =
+            setTimeout(() => {
+                setLiveSymbol('-')
+            }, HOLD_THRESHOLD)
+    }
+
+    function handlePointerUp(event) {
+        if (
+            event.currentTarget.hasPointerCapture(
+                event.pointerId
+            )
+        ) {
+            event.currentTarget.releasePointerCapture(
+                event.pointerId
+            )
+        }
+
+        clearHoldTimer()
+
+        const duration =
+            performance.now() -
+            pressStartedAt.current
+
+        const symbol =
+            duration >= HOLD_THRESHOLD
+                ? '-'
+                : '.'
+
+        setIsPressed(false)
+
+        handleSignal(symbol)
+    }
+
+    function handlePointerCancel() {
+        clearHoldTimer()
+
+        setIsPressed(false)
+        setLiveSymbol('')
+    }
+
+    function handleManualLetter() {
+        const code =
+            currentCodeRef.current
+
+        if (!code) {
+            return
+        }
+
+        clearAnimation()
+
+        setCommittedMorse(
+            (value) => {
+                const trimmed =
+                    value.trimEnd()
+
+                return trimmed
+                    ? `${trimmed} ${code} `
+                    : `${code} `
+            }
+        )
+
+        setCurrentCode('')
+        currentCodeRef.current = ''
+
+        setGapStage('none')
+        gapStageRef.current = 'none'
+
+        setElapsed(0)
+    }
+
+    function handleManualWord() {
+        const code =
+            currentCodeRef.current
+
+        clearAnimation()
+
+        setCommittedMorse(
+            (value) => {
+                const trimmed =
+                    value.trimEnd()
+
+                if (code) {
+                    return trimmed
+                        ? `${trimmed} ${code} / `
+                        : `${code} / `
+                }
+
+                if (!trimmed) {
+                    return value
+                }
+
+                return `${trimmed} / `
+            }
+        )
+
+        setCurrentCode('')
+        currentCodeRef.current = ''
+
+        setGapStage('none')
+        gapStageRef.current = 'none'
+
+        setElapsed(0)
+    }
+
+    function handleDeleteLast() {
+        clearAnimation()
+        clearHoldTimer()
+
+        setLiveSymbol('')
+        setElapsed(0)
+
+        const current =
+            currentCodeRef.current
+
+        if (current) {
+            const next =
+                current.slice(0, -1)
+
+            currentCodeRef.current =
+                next
+
+            setCurrentCode(next)
+
+            setGapStage('none')
+            gapStageRef.current =
+                'none'
+
+            return
+        }
+
+        setCommittedMorse(
+            (value) => {
+                if (!value) {
+                    return value
+                }
+
+                if (
+                    value.endsWith(' / ')
+                ) {
+                    setGapStage(
+                        'none'
+                    )
+
+                    gapStageRef.current =
+                        'none'
+
+                    return value.slice(
+                        0,
+                        -3
+                    )
+                }
+
+                if (
+                    value.endsWith(' ')
+                ) {
+                    setGapStage(
+                        'none'
+                    )
+
+                    gapStageRef.current =
+                        'none'
+
+                    return value.slice(
+                        0,
+                        -1
+                    )
+                }
+
+                const next =
+                    value.slice(
+                        0,
+                        -1
+                    )
+
+                setGapStage(
+                    'none'
+                )
+
+                gapStageRef.current =
+                    'none'
+
+                return next
+            }
+        )
+    }
+
+    function toggleMode() {
+        clearAnimation()
+
+        const nextMode =
+            modeRef.current === 'auto'
+                ? 'manual'
+                : 'auto'
+
+        modeRef.current =
+            nextMode
+
+        setMode(nextMode)
+
+        setGapStage('none')
+        gapStageRef.current =
+            'none'
+
+        setElapsed(0)
+    }
+
+    function toggleMessage(messageId) {
+        setExpandedMessages(
+            (current) => {
+                const next =
+                    new Set(current)
+
+                if (
+                    next.has(messageId)
+                ) {
+                    next.delete(
+                        messageId
+                    )
+                } else {
+                    next.add(
+                        messageId
+                    )
+                }
+
+                return next
+            }
+        )
+    }
+
+    async function handleSend() {
+        const finalMorse =
+            (
+                committedMorse +
+                currentCode
+            )
+                .replace(
+                    /\s*\/\s*/g,
+                    ' / '
+                )
+                .replace(
+                    /\s+/g,
+                    ' '
+                )
+                .trim()
+                .replace(
+                    /\s*\/\s*$/,
+                    ''
+                )
+
+        if (
+            !finalMorse ||
+            !room?.id ||
+            isSending
+        ) {
+            return
+        }
+
+        try {
+            setIsSending(true)
+            setError('')
+
+            const message =
+                await sendMessage(
+                    room.id,
+                    finalMorse
+                )
+
+            if (message) {
+                setMessages(
+                    (value) => {
+                        const exists =
+                            value.some(
+                                (item) =>
+                                    item.id ===
+                                    message.id
+                            )
+
+                        if (exists) {
+                            return value
+                        }
+
+                        return [
+                            ...value,
+                            message,
+                        ]
+                    }
+                )
+            }
+
+            setCommittedMorse('')
+            setCurrentCode('')
+
+            currentCodeRef.current =
+                ''
+
+            setGapStage('none')
+            gapStageRef.current =
+                'none'
+
+            setElapsed(0)
+
+            setLiveSymbol('')
+
+            clearAnimation()
+        } catch (error) {
+            setError(
+                error.message
+            )
+        } finally {
+            setIsSending(false)
+        }
+    }
+
+    useEffect(() => {
+        modeRef.current = mode
+    }, [mode])
+
+    useEffect(() => {
+        if (!room?.id) {
+            setMessages([])
+            setIsLoadingMessages(false)
+            return
+        }
+
+        let cancelled = false
+
+        async function loadMessages() {
+            try {
+                setIsLoadingMessages(true)
+                setError('')
+
+                const result =
+                    await getRoomMessages(
+                        room.id
+                    )
+
+                if (!cancelled) {
+                    setMessages(
+                        result
+                    )
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    setError(
+                        error.message
+                    )
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoadingMessages(
+                        false
+                    )
+                }
+            }
+        }
+
+        loadMessages()
+
+        return () => {
+            cancelled = true
+        }
+    }, [room?.id])
+
+    useEffect(() => {
+        if (!room?.id) {
+            return
+        }
+
+        let cancelled = false
+
+        async function connectRealtime() {
+            try {
+                const cleanup =
+                    await subscribeToRoom(
+                        room.id,
+                        (message) => {
+                            if (
+                                cancelled
+                            ) {
+                                return
+                            }
+
+                            setMessages(
+                                (current) => {
+                                    const exists =
+                                        current.some(
+                                            (item) =>
+                                                item.id ===
+                                                message.id
+                                        )
+
+                                    if (
+                                        exists
+                                    ) {
+                                        return current
+                                    }
+
+                                    return [
+                                        ...current,
+                                        message,
+                                    ]
+                                }
+                            )
+                        }
+                    )
+
+                if (cancelled) {
+                    await cleanup()
+                    return
+                }
+
+                realtimeCleanupRef.current =
+                    cleanup
+            } catch (error) {
+                if (!cancelled) {
+                    setError(
+                        `Realtime: ${error.message}`
+                    )
+                }
+            }
+        }
+
+        connectRealtime()
+
+        return () => {
+            cancelled = true
+
+            if (
+                realtimeCleanupRef.current
+            ) {
+                realtimeCleanupRef.current()
+                realtimeCleanupRef.current =
+                    null
+            }
+        }
+    }, [room?.id])
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView(
+            {
+                behavior: 'smooth',
+                block: 'end',
+            }
+        )
+    }, [messages.length])
+
+    useEffect(() => {
+        return () => {
+            clearAnimation()
+            clearHoldTimer()
+
+            if (
+                realtimeCleanupRef.current
+            ) {
+                realtimeCleanupRef.current()
+                realtimeCleanupRef.current =
+                    null
+            }
+        }
+    }, [])
+
+    return (
+        <main className="chat-screen">
+
+            <div className="chat-screen__ambient" />
+
+            <section className="chat">
+
+                <header className="chat__header">
+
+                    <div className="chat__inner">
+
+                        <div className="chat__room">
+
+                            <span className="chat__eyebrow">
+                                МОРЗЕ / КОМНАТА
+                            </span>
+
+                            <h1 className="chat__title">
+                                {room?.name ||
+                                    'КОМНАТА'}
+                            </h1>
+
+                            <span className="chat__room-id">
+                                КОД //{' '}
+                                {room?.code ||
+                                    '------'}
+                            </span>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            className="chat__close"
+                            onClick={
+                                onBack
+                            }
+                            aria-label="Выйти из комнаты"
+                        >
+                            <span />
+                            <span />
+                        </button>
+
+                    </div>
+
+                </header>
+
+                <div className="chat__messages">
+
+                    <div className="chat__inner chat__messages-inner">
+
+                        {isLoadingMessages && (
+                            <div className="rooms-empty">
+                                <h2>
+                                    ЗАГРУЗКА
+                                </h2>
+
+                                <p>
+                                    СИНХРОНИЗАЦИЯ
+                                    СООБЩЕНИЙ...
+                                </p>
+                            </div>
+                        )}
+
+                        {!isLoadingMessages &&
+                            !messages.length && (
+                                <div className="rooms-empty">
+                                    <h2>
+                                        ПОКА ПУСТО
+                                    </h2>
+
+                                    <p>
+                                        Передайте
+                                        первый сигнал.
+                                    </p>
+                                </div>
+                            )}
+
+                        {messages.map(
+                            (message) => {
+                                const isOwn =
+                                    message.senderId ===
+                                    identity?.id
+
+                                const isExpanded =
+                                    expandedMessages.has(
+                                        message.id
+                                    )
+
+                                return (
+                                    <motion.article
+                                        className={`message ${
+                                            isOwn
+                                                ? 'message--outgoing'
+                                                : 'message--incoming'
+                                        } ${
+                                            isExpanded
+                                                ? 'message--expanded'
+                                                : ''
+                                        }`}
+                                        key={
+                                            message.id
+                                        }
+                                        layout
+                                        onClick={() =>
+                                            toggleMessage(
+                                                message.id
+                                            )
+                                        }
+                                    >
+
+                                        <div className="message__top">
+
+                                            <span>
+                                                {isOwn
+                                                    ? 'ИСХОДЯЩЕЕ'
+                                                    : 'ВХОДЯЩЕЕ'}
+                                            </span>
+
+                                            <span>
+                                                {isExpanded
+                                                    ? 'СКРЫТЬ'
+                                                    : 'ПЕРЕВЕСТИ'}
+                                            </span>
+
+                                        </div>
+
+                                        <MorseVisual
+                                            value={
+                                                message.morse
+                                            }
+                                            className="message__morse"
+                                        />
+
+                                        <AnimatePresence
+                                            initial={
+                                                false
+                                            }
+                                        >
+                                            {isExpanded && (
+                                                <motion.div
+                                                    className="message__translated"
+                                                    initial={{
+                                                        opacity: 0,
+                                                        height: 0,
+                                                        marginTop: 0,
+                                                        y: -4,
+                                                    }}
+                                                    animate={{
+                                                        opacity: 0.68,
+                                                        height: 'auto',
+                                                        marginTop: 14,
+                                                        y: 0,
+                                                    }}
+                                                    exit={{
+                                                        opacity: 0,
+                                                        height: 0,
+                                                        marginTop: 0,
+                                                        y: -4,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.24,
+                                                        ease: [
+                                                            0.22,
+                                                            1,
+                                                            0.36,
+                                                            1,
+                                                        ],
+                                                    }}
+                                                >
+                                                    {
+                                                        decodeMessage(
+                                                            message.morse
+                                                        )
+                                                    }
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        <span className="message__hint">
+                                            {isExpanded
+                                                ? 'НАЖМИТЕ, ЧТОБЫ СКРЫТЬ'
+                                                : 'НАЖМИТЕ, ЧТОБЫ ПЕРЕВЕСТИ'}
+                                        </span>
+
+                                    </motion.article>
+                                )
+                            }
+                        )}
+
+                        <div
+                            ref={
+                                messagesEndRef
+                            }
+                        />
+
+                    </div>
+
+                </div>
+
+                <section className="chat__composer">
+
+                    <div className="chat__inner">
+
+                        <div className="chat__composer-header">
+
+                            <div className="chat__composer-title">
+
+                                <span>
+                                    СООБЩЕНИЕ
+                                </span>
+
+                                <small>
+                                    {mode ===
+                                    'auto'
+                                        ? 'АВТОМАТИЧЕСКИЕ ПАУЗЫ'
+                                        : 'РУЧНЫЕ ПАУЗЫ'}
+                                </small>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                className={`mode-toggle ${
+                                    mode ===
+                                    'manual'
+                                        ? 'mode-toggle--manual'
+                                        : ''
+                                }`}
+                                onClick={
+                                    toggleMode
+                                }
+                            >
+
+                                <span
+                                    className={
+                                        mode ===
+                                        'auto'
+                                            ? 'is-active'
+                                            : ''
+                                    }
+                                >
+                                    АВТО
+                                </span>
+
+                                <i />
+
+                                <span
+                                    className={
+                                        mode ===
+                                        'manual'
+                                            ? 'is-active'
+                                            : ''
+                                    }
+                                >
+                                    ВРУЧНУЮ
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                        <div className="chat__draft">
+
+                            <div className="chat__draft-text">
+                                {decodedText ||
+                                    'Передайте сигнал ...'}
+                            </div>
+
+                            <div className="chat__draft-morse">
+
+                                {displayMorse ? (
+                                    <MorseVisual
+                                        value={
+                                            displayMorse
+                                        }
+                                        trailingBoundary={
+                                            trailingBoundary
+                                        }
+                                    />
+                                ) : (
+                                    <span className="chat__draft-empty">
+                                        • • •
+                                    </span>
+                                )}
+
+                            </div>
+
+                        </div>
+
+                        {error && (
+                            <div className="chat__error">
+                                {error}
+                            </div>
+                        )}
+
+                        {mode === 'auto' && (
+                            <div
+                                className={`spacing-timeline ${
+                                    gapStage ===
+                                    'waiting'
+                                        ? 'spacing-timeline--active'
+                                        : ''
+                                }`}
+                            >
+
+                                <div className="spacing-timeline__head">
+
+                                    <span>
+                                        {gapStage ===
+                                        'waiting'
+                                            ? 'ПАУЗА МЕЖДУ СИГНАЛАМИ'
+                                            : gapStage ===
+                                                'letter'
+                                                ? 'БУКВА ЗАВЕРШЕНА'
+                                                : gapStage ===
+                                                    'word'
+                                                    ? 'СЛОВО ЗАВЕРШЕНО'
+                                                    : 'АВТОМАТИЧЕСКОЕ РАЗДЕЛЕНИЕ'}
+                                    </span>
+
+                                    <strong>
+                                        {gapStage ===
+                                        'waiting'
+                                            ? `${Math.ceil(
+                                                Math.max(
+                                                    0,
+                                                    WORD_GAP -
+                                                    elapsed
+                                                )
+                                            )} мс`
+                                            : gapStage ===
+                                                'letter'
+                                                ? `${LETTER_GAP} мс`
+                                                : gapStage ===
+                                                    'word'
+                                                    ? `${WORD_GAP} мс`
+                                                    : 'ГОТОВ'}
+                                    </strong>
+
+                                </div>
+
+                                <div className="spacing-timeline__track">
+
+                                    <div
+                                        className="spacing-timeline__fill"
+                                        style={{
+                                            width: `${progress}%`,
+                                        }}
+                                    />
+
+                                    <div
+                                        className="spacing-timeline__cursor"
+                                        style={{
+                                            left: `${progress}%`,
+                                        }}
+                                    />
+
+                                    <div
+                                        className={`spacing-timeline__point spacing-timeline__point--letter ${
+                                            letterReached
+                                                ? 'is-active'
+                                                : ''
+                                        }`}
+                                    >
+                                        <span />
+                                    </div>
+
+                                    <div
+                                        className={`spacing-timeline__point spacing-timeline__point--word ${
+                                            wordReached
+                                                ? 'is-active'
+                                                : ''
+                                        }`}
+                                    >
+                                        <span />
+                                    </div>
+
+                                </div>
+
+                                <div className="spacing-timeline__labels">
+
+                                    <div>
+                                        <span>
+                                            0 мс
+                                        </span>
+
+                                        <strong>
+                                            СИГНАЛ
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            {LETTER_GAP} мс
+                                        </span>
+
+                                        <strong>
+                                            БУКВА
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            {WORD_GAP} мс
+                                        </span>
+
+                                        <strong>
+                                            СЛОВО
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        )}
+
+                        {mode === 'manual' && (
+                            <div className="manual-spacing">
+
+                                <button
+                                    type="button"
+                                    onClick={
+                                        handleManualLetter
+                                    }
+                                >
+                                    <strong>
+                                        БУКВА
+                                    </strong>
+
+                                    <span>
+                                        отделить
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={
+                                        handleManualWord
+                                    }
+                                >
+                                    <strong>
+                                        СЛОВО
+                                    </strong>
+
+                                    <span>
+                                        отделить
+                                    </span>
+                                </button>
+
+                            </div>
+                        )}
+
+                        <button
+                            type="button"
+                            className={`morse-key ${
+                                isPressed
+                                    ? 'morse-key--active'
+                                    : ''
+                            }`}
+                            onPointerDown={
+                                handlePointerDown
+                            }
+                            onPointerUp={
+                                handlePointerUp
+                            }
+                            onPointerCancel={
+                                handlePointerCancel
+                            }
+                            onContextMenu={(
+                                event
+                            ) =>
+                                event.preventDefault()
+                            }
+                        >
+
+                            <span className="morse-key__symbol">
+                                {isPressed
+                                    ? liveSymbol ===
+                                        '-'
+                                        ? '—'
+                                        : '·'
+                                    : '·'}
+                            </span>
+
+                            <span className="morse-key__state">
+                                {isPressed
+                                    ? liveSymbol ===
+                                        '-'
+                                        ? 'ТИРЕ'
+                                        : 'ТОЧКА'
+                                    : 'НАЖМИТЕ И ДЕРЖИТЕ'}
+                            </span>
+
+                        </button>
+
+                        <div className="chat__composer-actions">
+
+                            <button
+                                type="button"
+                                className="chat__delete"
+                                onClick={
+                                    handleDeleteLast
+                                }
+                                disabled={
+                                    !displayMorse.trim() ||
+                                    isSending
+                                }
+                            >
+                                <span>
+                                    УДАЛИТЬ
+                                </span>
+
+                                <strong>
+                                    ⌫
+                                </strong>
+                            </button>
+
+                            <button
+                                type="button"
+                                className="chat__send"
+                                onClick={
+                                    handleSend
+                                }
+                                disabled={
+                                    isSending ||
+                                    !displayMorse.trim()
+                                }
+                            >
+                                <span>
+                                    {isSending
+                                        ? 'ОТПРАВКА...'
+                                        : 'ОТПРАВИТЬ'}
+                                </span>
+
+                                <strong>
+                                    →
+                                </strong>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <footer className="chat__footer">
+
+                    <div className="chat__inner">
+
+                        <span>
+                            {isPressed
+                                ? 'ПЕРЕДАЧА'
+                                : 'ГОТОВ'}
+                        </span>
+
+                        <span>
+                            РУ / МОРЗЕ
+                        </span>
+
+                    </div>
+
+                </footer>
+
+            </section>
+
+        </main>
+    )
 }
 
 export default ChatScreen

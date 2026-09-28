@@ -243,6 +243,8 @@
   flex-wrap: wrap;
 
   row-gap: 13px;
+
+  max-width: 100%;
 }
 
 .morse-visual__word {
@@ -251,6 +253,8 @@
   align-items: center;
 
   flex-wrap: wrap;
+
+  max-width: 100%;
 }
 
 .morse-visual__letter {
@@ -332,6 +336,13 @@
 
   background: rgba(255, 255, 255, 0.12);
 }
+
+/* .morse-visual > .morse-visual__letter-gap:first-child,
+.morse-visual > .morse-visual__word-gap:first-child,
+.morse-visual__word > .morse-visual__letter-gap:first-child,
+.morse-visual__word > .morse-visual__word-gap:first-child {
+  display: none;
+} */
 
 .message__translated {
   overflow: hidden;
@@ -616,7 +627,11 @@
   width: 0;
   height: 2px;
 
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.78));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.78)
+  );
 
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
@@ -1026,7 +1041,14 @@
 
   background: rgba(255, 255, 255, 0.018);
 
-  clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
+  clip-path: polygon(
+    9px 0,
+    100% 0,
+    100% calc(100% - 9px),
+    calc(100% - 9px) 100%,
+    0 100%,
+    0 9px
+  );
 }
 
 .chat__delete span {
@@ -1090,7 +1112,11 @@
 
   border: 1px solid rgba(245, 247, 246, 0.22);
 
-  background: linear-gradient(110deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0.025)
+  );
 
   clip-path: polygon(
     11px 0,
@@ -1117,7 +1143,12 @@
   width: 30%;
   height: 100%;
 
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.11), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.11),
+    transparent
+  );
 
   transform: skewX(-20deg);
 
@@ -1159,7 +1190,11 @@
 }
 
 .chat__send:hover {
-  background: linear-gradient(110deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.045));
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.11),
+    rgba(255, 255, 255, 0.045)
+  );
 
   border-color: rgba(255, 255, 255, 0.3);
 
@@ -1220,6 +1255,24 @@
   letter-spacing: 0.15em;
 
   color: rgba(245, 247, 246, 0.38);
+}
+
+.chat__error {
+  margin-top: 8px;
+
+  padding: 8px 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.02);
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 0.08em;
+
+  color: rgba(245, 247, 246, 0.7);
 }
 
 @media (min-width: 1500px) {
@@ -2111,24 +2164,6 @@
     padding-top: 2px;
     padding-bottom: 2px;
   }
-}
-
-.chat__error {
-  margin-top: 8px;
-
-  padding: 8px 10px;
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  background: rgba(255, 255, 255, 0.02);
-
-  font-family: monospace;
-
-  font-size: 9px;
-
-  letter-spacing: 0.08em;
-
-  color: rgba(245, 247, 246, 0.7);
 }
 
 @media (prefers-reduced-motion: reduce) {
