@@ -337,13 +337,6 @@
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* .morse-visual > .morse-visual__letter-gap:first-child,
-.morse-visual > .morse-visual__word-gap:first-child,
-.morse-visual__word > .morse-visual__letter-gap:first-child,
-.morse-visual__word > .morse-visual__word-gap:first-child {
-  display: none;
-} */
-
 .message__translated {
   overflow: hidden;
 
@@ -688,7 +681,7 @@
 }
 
 .spacing-timeline__point--letter {
-  left: 50%;
+  left: 85%;
 }
 
 .spacing-timeline__point--word {
@@ -734,41 +727,47 @@
 }
 
 .spacing-timeline__labels {
-  display: grid;
+  position: relative;
 
-  grid-template-columns:
-    1fr
-    1fr
-    1fr;
+  height: 30px;
 
   margin-top: 8px;
 
   font-family: monospace;
-
   font-size: 14px;
-
   letter-spacing: 0.08em;
 
   color: rgba(245, 247, 246, 0.8);
 }
 
 .spacing-timeline__labels div {
-  display: flex;
+  position: absolute;
+  top: 0;
 
+  display: flex;
   flex-direction: column;
 
   gap: 3px;
 }
 
-.spacing-timeline__labels div:nth-child(2) {
-  align-items: center;
+.spacing-timeline__labels div:first-child {
+  left: 0;
+}
 
+.spacing-timeline__labels div:nth-child(2) {
+  left: 85%;
+
+  transform: translateX(-50%);
+
+  align-items: center;
   text-align: center;
 }
 
-.spacing-timeline__labels div:last-child {
-  align-items: flex-end;
 
+.spacing-timeline__labels div:last-child {
+  right: 0;
+
+  align-items: flex-end;
   text-align: right;
 }
 
