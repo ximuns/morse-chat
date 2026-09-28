@@ -681,7 +681,7 @@
 }
 
 .spacing-timeline__point--letter {
-  left: 85%;
+  left: 68%;
 }
 
 .spacing-timeline__point--word {
@@ -755,7 +755,7 @@
 }
 
 .spacing-timeline__labels div:nth-child(2) {
-  left: 85%;
+  left: 68%;
 
   transform: translateX(-50%);
 

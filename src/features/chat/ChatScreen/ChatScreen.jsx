@@ -30,7 +30,7 @@ import './ChatScreen.css'
 
 const HOLD_THRESHOLD = 260
 const LETTER_GAP = 700
-const WORD_GAP = 900
+const WORD_GAP = 1200
 
 function decodeMessage(morse) {
     if (!morse.trim()) {
