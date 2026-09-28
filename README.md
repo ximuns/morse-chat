@@ -4,12 +4,11 @@
 
 ### Необычный real-time чат, построенный вокруг азбуки Морзе.
 
-**[ Открыть демо → ](https://morse-chat-rosy.vercel.app/)**
-**[ Исходный код → ](https://github.com/ximuns/morse-chat)**
+**[ демо → ](https://morse-chat-rosy.vercel.app/)**
 
 <br>
 
-<img src="docs/screenshots/hero.png" alt="Morse Chat" width="850">
+<img src="docs/logo.png" alt="Morse Chat" width="850">
 
 <br><br>
 
@@ -56,7 +55,7 @@
 
 Полученная последовательность отправляется участнику комнаты в реальном времени.
 
-Проект создан как самостоятельный pet-project на стыке **frontend-разработки, realtime-коммуникации, interaction design, анимации и 3D-визуализации**.
+Проект создан как самостоятельный pet-project на стыке **frontend-разработки, realtime-коммуникации, interaction design и анимации**.
 
 ---
 
@@ -103,13 +102,11 @@
 
 <div align="center">
 
-<img src="docs/screenshots/home.png" width="220" alt="Главный экран">
+<img src="docs/screenshots/main.jpg" width="220" alt="Главный экран">
 &nbsp;&nbsp;
-<img src="docs/screenshots/create-room.png" width="220" alt="Создание комнаты">
+<img src="docs/screenshots/createRoom.jpg" width="220" alt="Создание комнаты">
 &nbsp;&nbsp;
-<img src="docs/screenshots/chat.png" width="220" alt="Чат">
-&nbsp;&nbsp;
-<img src="docs/screenshots/morse-input.png" width="220" alt="Morse Input">
+<img src="docs/screenshots/chat.jpg" width="220" alt="Чат">
 
 </div>
 
@@ -117,7 +114,7 @@
 
 <div align="center">
 
-`HOME`   `ROOM`   `CHAT`   `MORSE INPUT`
+`HOME`   `ROOM`   `CHAT`
 
 </div>
 
@@ -203,29 +200,6 @@
                ROOM A                ROOM B
 ```
 
----
-
-## ⌘ Структура проекта
-
-```text
-morse-chat/
-│
-├── api/                    # API-часть
-├── public/                 # Статические ресурсы
-├── src/                    # Основное React-приложение
-├── supabase/               # Supabase / backend
-│
-├── .gitignore
-├── .prettierrc
-├── eslint.config.js
-├── index.html
-├── package.json
-├── package-lock.json
-├── vite.config.js
-└── README.md
-```
-
----
 
 ## ▶ Локальный запуск
 
@@ -247,8 +221,12 @@ npm install
 Создайте `.env`:
 
 ```env
+SUPABASE_SECRET_KEY=
+SUPABASE_URL=
+SUPABASE_JWT_SECRET=
+
+VITE_SUPABASE_PUBLISHABLE_KEY=
 VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
 ```
 
 Добавьте значения вашего Supabase-проекта.
@@ -357,56 +335,6 @@ Production-сборка
 
 </table>
 
----
-
-## ✦ Что показывает этот проект
-
-Morse Chat создавался не как очередной учебный CRUD-проект.
-
-Основная задача — самостоятельно пройти весь путь от идеи до работающего продукта:
-
-```text
-IDEA
-  ↓
-PRODUCT
-  ↓
-UI / UX
-  ↓
-INTERACTION
-  ↓
-REACT
-  ↓
-REAL-TIME
-  ↓
-ANIMATION
-  ↓
-3D
-  ↓
-DEPLOYMENT
-```
-
-В проекте сочетаются:
-
-**Frontend development**
-React, component architecture, application logic.
-
-**Realtime**
-Supabase Database + Realtime.
-
-**Interaction design**
-Tap / hold interaction для формирования Morse-сигналов.
-
-**Motion**
-Анимации и состояния интерфейса.
-
-**3D / WebGL**
-Визуальные эффекты на базе Three.js.
-
-**Product thinking**
-Самостоятельная идея и собственная модель взаимодействия.
-
----
-
 ## ◍ Live Demo
 
 <div align="center">
@@ -418,26 +346,6 @@ Tap / hold interaction для формирования Morse-сигналов.
 *Проект развёрнут и доступен в браузере.*
 
 </div>
-
----
-
-## Roadmap
-
-```text
-[x] Концепция проекта
-[x] Интерфейс
-[x] Morse Input
-[x] Комнаты
-[x] Real-time сообщения
-[x] Анимации
-[x] 3D / Visual Effects
-[x] Deployment
-
-[ ] Дополнительные Morse-инструменты
-[ ] Улучшение UX
-[ ] Расширение realtime-функциональности
-[ ] Дополнительные интерактивные эффекты
-```
 
 ---
 
