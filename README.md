@@ -102,11 +102,11 @@
 
 <div align="center">
 
-<img src="https://github.com/ximuns/morse-chat/docs/screenshots/main.jpg" width="220" alt="Главный экран">
+<img src="docs/main.jpg" width="220" alt="Главный экран">
 &nbsp;&nbsp;
-<img src="docs/screenshots/createRoom.jpg" width="220" alt="Создание комнаты">
+<img src="docs/createRoom.jpg" width="220" alt="Создание комнаты">
 &nbsp;&nbsp;
-<img src="docs/screenshots/chat.jpg" width="220" alt="Чат">
+<img src="docs/chat.jpg" width="220" alt="Чат">
 
 </div>
 
